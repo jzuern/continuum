@@ -11,6 +11,8 @@ using namespace std;
 class Simulation : public Gtk::Window{
 public:
     Gtk::Image img;
+    Gtk::EventBox box;
+
     int time_step_counter;
 
     int height;
@@ -20,10 +22,11 @@ public:
 
     float ** data_array_old;
     float ** data_array_new;
-
+    float ** velocity_array;
 
     bool on_timeout(); //return true to keep the timeout and false to end it
     void update_view(float ** data_array_new);
+    bool on_eventbox_button_press(GdkEventButton*);
 
     Simulation();
     virtual ~Simulation();

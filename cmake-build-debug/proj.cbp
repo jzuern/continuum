@@ -44,6 +44,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/home/jannik/Desktop/proj/include"/>
 					<Add directory="/usr/include/gtkmm-3.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include"/>
@@ -77,6 +78,7 @@
 					<Add directory="/usr/include/gdk-pixbuf-2.0"/>
 					<Add directory="/usr/include/glib-2.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
+					<Add directory="/usr/local/cuda-9.0/include"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -100,6 +102,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/usr/local/cuda/include"/>
 					<Add directory="/home/jannik/Desktop/proj/include"/>
 					<Add directory="/usr/include/gtkmm-3.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include"/>
@@ -133,6 +136,7 @@
 					<Add directory="/usr/include/gdk-pixbuf-2.0"/>
 					<Add directory="/usr/include/glib-2.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
+					<Add directory="/usr/local/cuda-9.0/include"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -150,13 +154,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/jannik/Desktop/proj/cmake-build-debug/simulation.h">
+		<Unit filename="/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir/proj_generated_main.cu.o">
 			<Option target="proj"/>
 		</Unit>
-		<Unit filename="/home/jannik/Desktop/proj/main.cpp">
+		<Unit filename="/home/jannik/Desktop/proj/main.cu">
 			<Option target="proj"/>
 		</Unit>
 		<Unit filename="/home/jannik/Desktop/proj/simulation.cpp">
+			<Option target="proj"/>
+		</Unit>
+		<Unit filename="/home/jannik/Desktop/proj/simulation.h">
 			<Option target="proj"/>
 		</Unit>
 		<Unit filename="/home/jannik/Desktop/proj/CMakeLists.txt">

@@ -5,21 +5,29 @@
 #include <iostream>
 #include "simulation.h"
 #include <cmath>        // std::abs
-
+#include <ctime>  // clock
 
 using namespace std;
 
 
 Simulation::Simulation(){
 
-    width = 500;
-    height = 500;
+    width = 800;
+    height = 800;
 
     set_default_size(width, height);
     set_title("Gtkmm Programming - C++");
     set_position(Gtk::WIN_POS_CENTER);
 
-    add(img);
+    box.add(img);
+    add(box);
+
+    box.set_events(Gdk::BUTTON_PRESS_MASK);
+    box.signal_button_press_event().connect(
+            sigc::mem_fun(*this, &Simulation::on_eventbox_button_press) );
+
+
+
 
     time_step_counter = 0;
 
@@ -39,19 +47,35 @@ Simulation::Simulation(){
     data_array_old = new float*[height];
     for(int i = 0; i < height; ++i) data_array_old[i] = new float[width];
 
-    // populate data array (anfangsbedingungen)
+    velocity_array = new float*[height];
+    for(int i = 0; i < height; ++i) velocity_array[i] = new float[width];
 
+    // populate data array (anfangsbedingungen)
     for (int i = 0; i < width; i++)
     {
         for (int j = 0; j < height; j++)
         {
             data_array_new[i][j] = 0.0;
-            if (i > middle_x and j > middle_y)
+            if (i > 1.6*middle_x and j > 1.6*middle_y)
             {
                 data_array_new[i][j] = 1.0f;
             }
+            if ((i-middle_x)*(i-middle_x) + (j-middle_y)*(j-middle_y) < 100*100)
+            {
+                data_array_new[i][j] = 0.8;
+            }
         }
     }
+
+    // populate velocity field
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            velocity_array[i][j] = 0.0;
+        }
+    }
+
 
     update_view(data_array_new);
 
@@ -61,7 +85,7 @@ Simulation::Simulation(){
 //    guchar * data = ref_orig->get_pixels();
 
     //create slot for timeout signal
-    int timeout_value = 100; //in ms
+    int timeout_value = 50; //in ms
     sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout);
 
     //connect slot to signal
@@ -90,8 +114,12 @@ bool Simulation::on_timeout(){
     int middle_x = width / 2;
     int middle_y = height / 2;
 
+    std::clock_t    start;
 
-    // populate data array
+    start = std::clock();
+
+
+    // update data array
     for (int i = 1; i < width-1; i++)
     {
         for (int j = 1; j < height-1; j++)
@@ -104,9 +132,17 @@ bool Simulation::on_timeout(){
 
             float clf = 0.42; // must be smaller than 0.5, otherwise instable!
 
+            // diffuse
             data_array_new[i][j] = data_array_old[i][j] + clf*(lower + upper + left + right - 4*data_array_old[i][j]);
+
+            // advect according to velocity field
+
         }
     }
+
+    // your test
+    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+
 
     // update view of data array
     update_view(data_array_new);
@@ -152,3 +188,29 @@ void Simulation::update_view(float ** data_array_new)
     img.set(ref_dest);
 }
 
+
+
+bool Simulation::on_eventbox_button_press(GdkEventButton* e)
+{
+    gdouble x = e->x;
+    gdouble y = e->y;
+
+    printf("x = %f, y = %f\n", x, y);
+
+    // add new blob here
+    // update data array
+    for (int i = 1; i < width-1; i++)
+    {
+        for (int j = 1; j < height-1; j++)
+        {
+
+            if ((i - y)*(i - y) + (j - x)*(j - x) < 20*20)
+            {
+                data_array_old[i][j] = 1.0f;
+            }
+        }
+    }
+
+
+    return true;
+}

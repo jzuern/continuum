@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/jannik/Desktop/proj/main.cpp
-iostream
--
-jpeglib.h
--
-gtkmm.h
--
-simulation.h
-/home/jannik/Desktop/proj/simulation.h
-
 /home/jannik/Desktop/proj/simulation.cpp
 gtkmm.h
 -
@@ -24,6 +14,8 @@ iostream
 simulation.h
 /home/jannik/Desktop/proj/simulation.h
 cmath
+-
+ctime
 -
 
 /home/jannik/Desktop/proj/simulation.h

@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/jannik/Desktop/proj/main.cpp" "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir/main.cpp.o"
   "/home/jannik/Desktop/proj/simulation.cpp" "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir/simulation.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/local/cuda/include"
   "../include"
   "/usr/include/gtkmm-3.0"
   "/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include"
@@ -44,6 +44,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/gdk-pixbuf-2.0"
   "/usr/include/glib-2.0"
   "/usr/lib/x86_64-linux-gnu/glib-2.0/include"
+  "/usr/local/cuda-9.0/include"
   )
 
 # Targets to which this target links.
