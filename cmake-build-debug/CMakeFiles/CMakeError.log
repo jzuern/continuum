@@ -1,24 +1,24 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: /home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_f2aa3/fast"
-/usr/bin/make -f CMakeFiles/cmTC_f2aa3.dir/build.make CMakeFiles/cmTC_f2aa3.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f2aa3.dir/CheckSymbolExists.c.o
-/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_f2aa3.dir/CheckSymbolExists.c.o   -c /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_f2aa3
-/home/jannik/Downloads/CLion-2018.1.2/clion-2018.1.2/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f2aa3.dir/link.txt --verbose=1
-/usr/bin/cc -fPIC     CMakeFiles/cmTC_f2aa3.dir/CheckSymbolExists.c.o  -o cmTC_f2aa3 
-CMakeFiles/cmTC_f2aa3.dir/CheckSymbolExists.c.o: In function `main':
+Run Build Command:"/usr/bin/make" "cmTC_61d6a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_61d6a.dir/build.make CMakeFiles/cmTC_61d6a.dir/build
+make[1]: Entering directory '/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_61d6a.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_61d6a.dir/CheckSymbolExists.c.o   -c /home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_61d6a
+/home/jannik/Downloads/clion-2018.1.2/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_61d6a.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     CMakeFiles/cmTC_61d6a.dir/CheckSymbolExists.c.o  -o cmTC_61d6a 
+CMakeFiles/cmTC_61d6a.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_f2aa3.dir/build.make:97: recipe for target 'cmTC_f2aa3' failed
-make[1]: *** [cmTC_f2aa3] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_f2aa3/fast' failed
-make: *** [cmTC_f2aa3/fast] Error 2
+CMakeFiles/cmTC_61d6a.dir/build.make:97: recipe for target 'cmTC_61d6a' failed
+make[1]: *** [cmTC_61d6a] Error 1
+make[1]: Leaving directory '/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_61d6a/fast' failed
+make: *** [cmTC_61d6a/fast] Error 2
 
-File /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -34,457 +34,166 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: /home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_61931/fast"
-/usr/bin/make -f CMakeFiles/cmTC_61931.dir/build.make CMakeFiles/cmTC_61931.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_61931.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_61931.dir/CheckFunctionExists.c.o   -c /home/jannik/Downloads/CLion-2018.1.2/clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CheckFunctionExists.c
-Linking C executable cmTC_61931
-/home/jannik/Downloads/CLion-2018.1.2/clion-2018.1.2/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_61931.dir/link.txt --verbose=1
-/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_61931.dir/CheckFunctionExists.c.o  -o cmTC_61931 -lpthreads 
-/usr/bin/x86_64-linux-gnu-ld: cannot find -lpthreads
+Run Build Command:"/usr/bin/make" "cmTC_c1a83/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c1a83.dir/build.make CMakeFiles/cmTC_c1a83.dir/build
+make[1]: Entering directory '/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c1a83.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_c1a83.dir/CheckFunctionExists.c.o   -c /home/jannik/Downloads/clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c1a83
+/home/jannik/Downloads/clion-2018.1.2/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c1a83.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_c1a83.dir/CheckFunctionExists.c.o  -o cmTC_c1a83 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_61931.dir/build.make:97: recipe for target 'cmTC_61931' failed
-make[1]: *** [cmTC_61931] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_61931/fast' failed
-make: *** [cmTC_61931/fast] Error 2
+CMakeFiles/cmTC_c1a83.dir/build.make:97: recipe for target 'cmTC_c1a83' failed
+make[1]: *** [cmTC_c1a83] Error 1
+make[1]: Leaving directory '/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_c1a83/fast' failed
+make: *** [cmTC_c1a83/fast] Error 2
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
-
-
-Determining if the CUDA compiler works failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_51cb1/fast"
-/usr/bin/make -f CMakeFiles/cmTC_51cb1.dir/build.make CMakeFiles/cmTC_51cb1.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CUDA object CMakeFiles/cmTC_51cb1.dir/main.cu.o
-/usr/local/cuda-9.0/bin/nvcc     -x cu -c /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/main.cu -o CMakeFiles/cmTC_51cb1.dir/main.cu.o
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-CMakeFiles/cmTC_51cb1.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_51cb1.dir/main.cu.o' failed
-make[1]: *** [CMakeFiles/cmTC_51cb1.dir/main.cu.o] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_51cb1/fast' failed
-make: *** [cmTC_51cb1/fast] Error 2
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
-
-
-Determining if the CUDA compiler works failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_5b5c4/fast"
-/usr/bin/make -f CMakeFiles/cmTC_5b5c4.dir/build.make CMakeFiles/cmTC_5b5c4.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CUDA object CMakeFiles/cmTC_5b5c4.dir/main.cu.o
-/usr/local/cuda-9.0/bin/nvcc     -x cu -c /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/main.cu -o CMakeFiles/cmTC_5b5c4.dir/main.cu.o
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-CMakeFiles/cmTC_5b5c4.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_5b5c4.dir/main.cu.o' failed
-make[1]: *** [CMakeFiles/cmTC_5b5c4.dir/main.cu.o] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_5b5c4/fast' failed
-make: *** [cmTC_5b5c4/fast] Error 2
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
-
-
-Determining if the CUDA compiler works failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_adddd/fast"
-/usr/bin/make -f CMakeFiles/cmTC_adddd.dir/build.make CMakeFiles/cmTC_adddd.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CUDA object CMakeFiles/cmTC_adddd.dir/main.cu.o
-/usr/local/cuda-9.0/bin/nvcc     -x cu -c /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/main.cu -o CMakeFiles/cmTC_adddd.dir/main.cu.o
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-CMakeFiles/cmTC_adddd.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_adddd.dir/main.cu.o' failed
-make[1]: *** [CMakeFiles/cmTC_adddd.dir/main.cu.o] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_adddd/fast' failed
-make: *** [cmTC_adddd/fast] Error 2
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
-
-
-Determining if the CUDA compiler works failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_bc7d2/fast"
-/usr/bin/make -f CMakeFiles/cmTC_bc7d2.dir/build.make CMakeFiles/cmTC_bc7d2.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CUDA object CMakeFiles/cmTC_bc7d2.dir/main.cu.o
-/usr/local/cuda-9.0/bin/nvcc     -x cu -c /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/main.cu -o CMakeFiles/cmTC_bc7d2.dir/main.cu.o
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-CMakeFiles/cmTC_bc7d2.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_bc7d2.dir/main.cu.o' failed
-make[1]: *** [CMakeFiles/cmTC_bc7d2.dir/main.cu.o] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_bc7d2/fast' failed
-make: *** [cmTC_bc7d2/fast] Error 2
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
+No such file or directory
 
 
 Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
-Compiler: /usr/local/cuda-9.0/bin/nvcc 
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
 Build flags: 
 Id flags:  -v;--keep;--keep-dir;tmp
 
 The output was:
-1
-#$ _SPACE_= 
-#$ _CUDART_=cudart
-#$ _HERE_=/usr/local/cuda-9.0/bin
-#$ _THERE_=/usr/local/cuda-9.0/bin
-#$ _TARGET_SIZE_=
-#$ _TARGET_DIR_=
-#$ _TARGET_SIZE_=64
-#$ TOP=/usr/local/cuda-9.0/bin/..
-#$ NVVMIR_LIBRARY_DIR=/usr/local/cuda-9.0/bin/../nvvm/libdevice
-#$ LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin/../lib:
-#$ PATH=/usr/local/cuda-9.0/bin/../open64/bin:/usr/local/cuda-9.0/bin/../nvvm/bin:/usr/local/cuda-9.0/bin:/home/jannik/bin:/home/jannik/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/local/cuda-9.0/bin
-#$ INCLUDES="-I/usr/local/cuda-9.0/bin/..//include"  
-#$ LIBRARIES=  "-L/usr/local/cuda-9.0/bin/..//lib64/stubs" "-L/usr/local/cuda-9.0/bin/..//lib64"
-#$ CUDAFE_FLAGS=
-#$ PTXAS_FLAGS=
-#$ rm tmp/a_dlink.reg.c
-#$ gcc -std=c++14 -D__CUDA_ARCH__=300 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/usr/local/cuda-9.0/bin/..//include"   -D"__CUDACC_VER_BUILD__=176" -D"__CUDACC_VER_MINOR__=0" -D"__CUDACC_VER_MAJOR__=9" -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-# --error 0x1 --
+No such file or directory
 
 
-Determining if the CUDA compiler works failed with the following output:
-Change Dir: /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7b270/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7b270.dir/build.make CMakeFiles/cmTC_7b270.dir/build
-make[1]: Entering directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CUDA object CMakeFiles/cmTC_7b270.dir/main.cu.o
-/usr/local/cuda-9.0/bin/nvcc     -x cu -c /home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp/main.cu -o CMakeFiles/cmTC_7b270.dir/main.cu.o
-In file included from /usr/local/cuda-9.0/bin/..//include/host_config.h:50:0,
-                 from /usr/local/cuda-9.0/bin/..//include/cuda_runtime.h:78,
-                 from <command-line>:0:
-/usr/local/cuda-9.0/bin/..//include/crt/host_config.h:119:2: error: #error -- unsupported GNU version! gcc versions later than 6 are not supported!
- #error -- unsupported GNU version! gcc versions later than 6 are not supported!
-  ^~~~~
-CMakeFiles/cmTC_7b270.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_7b270.dir/main.cu.o' failed
-make[1]: *** [CMakeFiles/cmTC_7b270.dir/main.cu.o] Error 1
-make[1]: Leaving directory '/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_7b270/fast' failed
-make: *** [cmTC_7b270/fast] Error 2
+The output was:
+No such file or directory
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+No such file or directory
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+No such file or directory
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+No such file or directory
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+No such file or directory
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: CMAKE_CUDA_COMPILER-NOTFOUND 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+No such file or directory
 
 

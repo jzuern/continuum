@@ -1,4 +1,4 @@
-# Install script for directory: /home/jannik/Desktop/proj
+# Install script for directory: /home/jannik/Desktop/continuum
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/jannik/Desktop/proj/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/jannik/Desktop/continuum/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -57,29 +57,29 @@ if(NOT generated_file)
 endif()
 
 # Set these up as variables to make reading the generated file easier
-set(CMAKE_COMMAND "/home/jannik/Downloads/CLion-2018.1.2/clion-2018.1.2/bin/cmake/bin/cmake") # path
-set(source_file "/home/jannik/Desktop/proj/main.cu") # path
-set(NVCC_generated_dependency_file "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir//proj_generated_main.cu.o.NVCC-depend") # path
-set(cmake_dependency_file "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir//proj_generated_main.cu.o.depend") # path
-set(CUDA_make2cmake "/home/jannik/Downloads/CLion-2018.1.2/clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/FindCUDA/make2cmake.cmake") # path
-set(CUDA_parse_cubin "/home/jannik/Downloads/CLion-2018.1.2/clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/FindCUDA/parse_cubin.cmake") # path
+set(CMAKE_COMMAND "/home/jannik/Downloads/clion-2018.1.2/bin/cmake/bin/cmake") # path
+set(source_file "/home/jannik/Desktop/continuum/main.cu") # path
+set(NVCC_generated_dependency_file "/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/proj.dir//proj_generated_main.cu.o.NVCC-depend") # path
+set(cmake_dependency_file "/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/proj.dir//proj_generated_main.cu.o.depend") # path
+set(CUDA_make2cmake "/home/jannik/Downloads/clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/FindCUDA/make2cmake.cmake") # path
+set(CUDA_parse_cubin "/home/jannik/Downloads/clion-2018.1.2/bin/cmake/share/cmake-3.10/Modules/FindCUDA/parse_cubin.cmake") # path
 set(build_cubin OFF) # bool
 set(CUDA_HOST_COMPILER "/usr/bin/cc") # path
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
-set(generated_file_path "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir//.") # path
-set(generated_file_internal "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir//./proj_generated_main.cu.o") # path
-set(generated_cubin_file_internal "/home/jannik/Desktop/proj/cmake-build-debug/CMakeFiles/proj.dir//./proj_generated_main.cu.o.cubin.txt") # path
+set(generated_file_path "/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/proj.dir//.") # path
+set(generated_file_internal "/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/proj.dir//./proj_generated_main.cu.o") # path
+set(generated_cubin_file_internal "/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/proj.dir//./proj_generated_main.cu.o.cubin.txt") # path
 
-set(CUDA_NVCC_EXECUTABLE "/usr/local/cuda-9.0/bin/nvcc") # path
-set(CUDA_NVCC_FLAGS -gencode;arch=compute_30,code=sm_30;-ccbin;/usr/bin/gcc-6;-std=c++11 ;; ) # list
+set(CUDA_NVCC_EXECUTABLE "/usr/local/cuda/bin/nvcc") # path
+set(CUDA_NVCC_FLAGS -gencode;arch=compute_30,code=sm_30;-ccbin;/usr/bin/gcc-5;-std=c++11 ;; ) # list
 # Build specific configuration flags
 set(CUDA_NVCC_FLAGS_DEBUG  ; )
 set(CUDA_NVCC_FLAGS_MINSIZEREL  ; )
 set(CUDA_NVCC_FLAGS_RELEASE  ; )
 set(CUDA_NVCC_FLAGS_RELWITHDEBINFO  ; )
 set(nvcc_flags -m64) # list
-set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda-9.0/include;/usr/local/cuda/include;/home/jannik/Desktop/proj/include;/usr/include/gtkmm-3.0;/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include;/usr/include/atkmm-1.6;/usr/include/gtk-3.0/unix-print;/usr/include/gdkmm-3.0;/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include;/usr/include/giomm-2.4;/usr/lib/x86_64-linux-gnu/giomm-2.4/include;/usr/include/pangomm-1.4;/usr/lib/x86_64-linux-gnu/pangomm-1.4/include;/usr/include/glibmm-2.4;/usr/lib/x86_64-linux-gnu/glibmm-2.4/include;/usr/include/gtk-3.0;/usr/include/at-spi2-atk/2.0;/usr/include/at-spi-2.0;/usr/include/dbus-1.0;/usr/lib/x86_64-linux-gnu/dbus-1.0/include;/usr/include/gtk-3.0;/usr/include/gio-unix-2.0;/usr/include/cairo;/usr/include/pango-1.0;/usr/include/harfbuzz;/usr/include/pango-1.0;/usr/include/atk-1.0;/usr/include/cairo;/usr/include/cairomm-1.0;/usr/lib/x86_64-linux-gnu/cairomm-1.0/include;/usr/include/cairo;/usr/include/pixman-1;/usr/include/freetype2;/usr/include/libpng16;/usr/include/freetype2;/usr/include/libpng16;/usr/include/sigc++-2.0;/usr/lib/x86_64-linux-gnu/sigc++-2.0/include;/usr/include/gdk-pixbuf-2.0;/usr/include/libpng16;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include;/home/jannik/Desktop/proj/include;/usr/local/cuda-9.0/include") # list (needs to be in quotes to handle spaces properly).
+set(CUDA_NVCC_INCLUDE_DIRS "/usr/local/cuda/include;/usr/local/cuda-9.0/include;/home/jannik/Desktop/continuum/include;/usr/include/gtkmm-3.0;/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include;/usr/include/atkmm-1.6;/usr/include/gtk-3.0/unix-print;/usr/include/gdkmm-3.0;/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include;/usr/include/giomm-2.4;/usr/lib/x86_64-linux-gnu/giomm-2.4/include;/usr/include/pangomm-1.4;/usr/lib/x86_64-linux-gnu/pangomm-1.4/include;/usr/include/glibmm-2.4;/usr/lib/x86_64-linux-gnu/glibmm-2.4/include;/usr/include/gtk-3.0;/usr/include/at-spi2-atk/2.0;/usr/include/at-spi-2.0;/usr/include/dbus-1.0;/usr/lib/x86_64-linux-gnu/dbus-1.0/include;/usr/include/gtk-3.0;/usr/include/gio-unix-2.0;/usr/include/mirclient;/usr/include/mircore;/usr/include/mircookie;/usr/include/cairo;/usr/include/pango-1.0;/usr/include/harfbuzz;/usr/include/pango-1.0;/usr/include/atk-1.0;/usr/include/cairo;/usr/include/cairomm-1.0;/usr/lib/x86_64-linux-gnu/cairomm-1.0/include;/usr/include/cairo;/usr/include/pixman-1;/usr/include/freetype2;/usr/include/libpng12;/usr/include/sigc++-2.0;/usr/lib/x86_64-linux-gnu/sigc++-2.0/include;/usr/include/gdk-pixbuf-2.0;/usr/include/libpng12;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include;/home/jannik/Desktop/continuum/include;/usr/local/cuda/include") # list (needs to be in quotes to handle spaces properly).
 set(CUDA_NVCC_COMPILE_DEFINITIONS [==[]==]) # list (needs to be in lua quotes see #16510 ).
 set(format_flag "-c") # string
 set(cuda_language_flag ) # list
