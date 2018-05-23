@@ -31,28 +31,28 @@ Simulation::Simulation(){
 
     img_data = new guint8[3*height*width];
 
-    data_array_new = new float*[height];
-    for(int i = 0; i < height; ++i) data_array_new[i] = new float[width];
-
-    data_array_old = new float*[height];
-    for(int i = 0; i < height; ++i) data_array_old[i] = new float[width];
-
-    // populate data array (anfangsbedingungen)
-    for (int i = 0; i < width; i++)
-    {
-        for (int j = 0; j < height; j++)
-        {
-            data_array_new[i][j] = 0.0;
-            if (i > 1.6*middle_x and j > 1.6*middle_y)
-            {
-                data_array_new[i][j] = 1.0f;
-            }
-            if ((i-middle_x)*(i-middle_x) + (j-middle_y)*(j-middle_y) < 100*100)
-            {
-                data_array_new[i][j] = 0.8;
-            }
-        }
-    }
+//    data_array_new = new float*[height];
+//    for(int i = 0; i < height; ++i) data_array_new[i] = new float[width];
+//
+//    data_array_old = new float*[height];
+//    for(int i = 0; i < height; ++i) data_array_old[i] = new float[width];
+//
+//    // populate data array (starting conditions)
+//    for (int i = 0; i < width; i++)
+//    {
+//        for (int j = 0; j < height; j++)
+//        {
+//            data_array_new[i][j] = 0.0;
+//            if (i > 1.6*middle_x and j > 1.6*middle_y)
+//            {
+//                data_array_new[i][j] = 1.0;
+//            }
+//            if ((i-middle_x)*(i-middle_x) + (j-middle_y)*(j-middle_y) < 100*100)
+//            {
+//                data_array_new[i][j] = 0.8;
+//            }
+//        }
+//    }
 
     u = new float[size];
     v = new float[size];
@@ -61,12 +61,11 @@ Simulation::Simulation(){
     dens = new float[size];
     dens_prev = new float[size];
     occupiedGrid = new bool[size];
-    Nx = new float[size];
-    Ny = new float[size];
 
     initializeGrid();
-    initializeFluid(u,v,dens);
+    initializeFluid();
 
+//    print_helper();
 
     // create slot for timeout signal
     int timeout_value = 50; //in ms
@@ -80,6 +79,7 @@ Simulation::Simulation(){
 
 
     update_view_2(dens);
+//    print_helper();
 //    update_view(data_array_new);
 
 
@@ -88,7 +88,42 @@ Simulation::Simulation(){
 Simulation::~Simulation(){
 }
 
+void Simulation::print_helper()
+{
+    int every_n = 1;
+//    printf("Density Array: \n");
+//
+//    for (int i = 0; i < width; i+=every_n)
+//    {
+//        for (int j = 0; j < height; j+=every_n)
+//        {
+//            printf("%.5e ", dens[IX(i,j)]);
+//        }
+//        printf("\n");
+//    }
 
+    printf("Velocity u Array: \n");
+
+    for (int i = 0; i < width; i+=every_n)
+    {
+        for (int j = 0; j < height; j+=every_n)
+        {
+            printf("%.5e ", u[IX(i,j)]);
+        }
+        printf("\n");
+    }
+
+    printf("Velocity u_prev Array: \n");
+
+    for (int i = 0; i < width; i+=every_n)
+    {
+        for (int j = 0; j < height; j+=every_n)
+        {
+            printf("%.5e ", u_prev[IX(i,j)]);
+        }
+        printf("\n");
+    }
+}
 
 
 bool Simulation::on_timeout(){
@@ -131,20 +166,32 @@ bool Simulation::on_timeout_2() {
     time_step_counter += 1;
 
     cout<< "Iteration " << time_step_counter << endl;
-
-
     std::clock_t start;
     start = std::clock();
 
-    get_from_UI( dens,u,v,dens_prev, u_prev, v_prev ,t); // external influence on fluid
+//    print_helper();
 
+
+//    get_from_UI( dens,u,v,dens_prev, u_prev, v_prev); // external influence on fluid
+//    printf("completed get_from_UI ");
+
+
+
+    printf("\nbefore vel_step \n");
     // NAVIER-STOKES SOLUTION: VELOCITY FIELD AND DENSITY FIELD SEPARATELY SOLVED
     vel_step( u, v, u_prev, v_prev, visc, dt);
+    printf("completed vel_step ");
+    printf("\nafter vel_step \n");
+
     dens_step( dens, dens_prev, u, v, diff, dt);
+    printf("completed dens_step \n");
+
 
     std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
     update_view_2(dens);
+
+    printf("completed update_view_2 \n");
 
 }
 
@@ -181,6 +228,7 @@ void Simulation::update_view(float ** data_array_new)
 
     img.clear();
     img.set(ref_dest);
+
 }
 
 
@@ -188,16 +236,7 @@ void Simulation::update_view(float ** data_array_new)
 void Simulation::update_view_2(float * dens)
 {
 
-//    printf("Density Array: \n");
-//
-//    for (int i = 0; i < width; i+=1)
-//    {
-//        for (int j = 0; j < height; j+=1)
-//        {
-//            printf("%f ", dens[IX(i,j)]);
-//        }
-//        printf("\n");
-//    }
+
 
     // update view of data array
     for (int i = 0; i < width; i++)
@@ -208,14 +247,12 @@ void Simulation::update_view_2(float * dens)
 
             float value = dens[IX(i,j)] * 255.0;
 //            float value = float(i) / width * 255;
-//            printf("%f ", value);
 
             img_data[ii] = guint8(value);
             img_data[ii+1] = guint8(value);
             img_data[ii+2] = guint8(value);
         }
     }
-
 
     int rowstride = 3*width;
     bool has_alpha = false;
@@ -237,16 +274,16 @@ bool Simulation::on_eventbox_button_press(GdkEventButton* e)
     gdouble x = e->x;
     gdouble y = e->y;
 
-    printf("x = %f, y = %f\n", x, y);
+    printf("found mouse click at x = %f, y = %f\n", x, y);
 
     for (int i = 1; i < width-1; i++)
     {
         for (int j = 1; j < height-1; j++)
         {
-            if ((i - y)*(i - y) + (j - x)*(j - x) < 10*10)
+            if ((i - y)*(i - y) + (j - x)*(j - x) < 5*5)
             {
 //                data_array_old[i][j] = 1.0f;
-                printf("adding some density\n");
+                printf("adding density");
                 dens_prev[IX(i,j)] = 1.0;
                 dens[IX(i,j)] = 1.0;
             }
@@ -260,25 +297,23 @@ bool Simulation::on_eventbox_button_press(GdkEventButton* e)
 void Simulation::initializeGrid()
 // initialize the grid cell coordinates
 {
+    // initialize occ grid
     for ( int i=1 ; i<=N ; i++ ) {
-        Nx[i] = i;
-        Ny[i] = i;
-        occupiedGrid[i] = false;
+        for ( int j=1 ; j<=N ; j++ ) {
+            occupiedGrid[IX(i,j)] =false; // u velocity at t=0
+        }
     }
-
 }
 
 
-void Simulation::initializeFluid(float *u,float *v,float *dens)
+void Simulation::initializeFluid()
 {
     // initialize the fluid state (velocities and density) at t=0
-    for ( int i=1 ; i<=N ; i++ ) {
-        for ( int j=1 ; j<=N ; j++ ) {
-            u[IX(i,j)] = 1.0; // u velocity at t=0
-            v[IX(i,j)] = 0.00; // v velocity at t=0
-
-            dens[IX(i,j)] = 0.0; // density at t=0
-            if (i < 100 and i > 50) dens[IX(i,j)] = 1.;
+    for ( int i=0 ; i<=N ; i++ ) {
+        for ( int j=0 ; j<=N ; j++ ) {
+            u[IX(i,j)] = 0.1; // u velocity at t=0
+            v[IX(i,j)] = 0.1; // v velocity at t=0
+            dens[IX(i,j)] = 1.0; // density at t=0
         }
     }
 }
@@ -289,7 +324,7 @@ void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
     // used for density, u-component and v-component of velocity field separately
 
     float a=dt*diff*N*N;
-    int nIter = 20;
+    int nIter = 10;
 
     for (int k=0 ; k < nIter ; k++ ) {
         for (int i=1 ; i<=N ; i++ ) {
@@ -306,9 +341,12 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
 {
     // calculate the advection of density in velocity field and velocity field along itself
 
+    // b == 0: density
+    // b == 1: u
+    // b == 2: v
+
     int i, j, i0, j0, i1, j1;
     float x, y, s0, t0, s1, t1, dt0;
-    bool occ;
     dt0 = dt*N;
 
     for ( i=1 ; i<=N ; i++ ) {
@@ -326,11 +364,10 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
             t1 = y-j0;
             t0 = 1-t1;
 
-            occ = occupiedGrid[IX(i,j)];
-
-            if(occ == 0) d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+t1*d0[IX(i0,j1)])+s1*(t0*d0[IX(i1,j0)]+t1*d0[IX(i1,j1)]);
-            else
-                d[IX(i,j)] = 0;
+            d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+
+                             t1*d0[IX(i0,j1)])+
+                         s1*(t0*d0[IX(i1,j0)]+
+                             t1*d0[IX(i1,j1)]);
         }
     }
 
@@ -342,7 +379,7 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
 void Simulation::add_source (float * x, float * s, float dt )
 {
     // add sources for velocity field or density field
-    int i, size=(N+2)*(N+2);
+    int i, size=(height+2)*(width+2);
     for ( i=0 ; i<size ; i++ ){
         x[i] += dt*s[i];
     }
@@ -350,6 +387,7 @@ void Simulation::add_source (float * x, float * s, float dt )
 
 void Simulation::dens_step (float * x, float * x0, float * u, float * v, float diff,float dt)
 {
+
     // executes all routines for motion of density field in one time step
     add_source(x, x0, dt );
     SWAP ( x0,x);
@@ -423,51 +461,36 @@ void Simulation::set_bnd(int b, float * x)
 {
     // define boundary values for velocity and density
 
+
     for (int i=1 ; i<=N; i++ ) {
 
         // left border
 
-        x[IX(0, i)] = b == 1 ? -x[IX(1, i)] : x[IX(1, i)]; // bounded box boundary conditions
-        x[IX(0, i)] = 0;
+        x[IX(0 ,i)] = b==1 ? -x[IX(1,i)] : x[IX(1,i)]; // bounded box boundary conditions
+
+
 
         // right border
-        x[IX(N + 1, i)] = b == 1 ? -x[IX(N, i)] : x[IX(N, i)]; // bounded box boundary conditions
-        x[IX(N + 1, i)] = 0;
+        x[IX(N+1,i)] = b==1 ? -x[IX(N,i)] : x[IX(N,i)]; // bounded box boundary conditions
 
 
         // bottom border
-        x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)]; // bounded box boundary conditions
-        x[IX(i, 0)] = 0;
+        //        x[IX(i,0 )] = b==2 ? -x[IX(i,1)] : x[IX(i,1)]; // bounded box boundary conditions
 
-//        // make jets at the bottom
-//        x[IX(i,0 )] = 0;
-//
-//        if ((i > 4.5*N/10 && i < 5.5*N/10))
-//            x[IX(i,0 )] += 0.4;
-//        else if ((i > 0.5*N/10 && i < 1.8*N/10))
-//            x[IX(i,0 )] += 0.4;
-//        else if ((i > 7.8*N/10 && i < 8.9*N/10))
-//            x[IX(i,0 )] += 0.4;
+        // make jets at the bottom
+        x[IX(i,0 )] = 0;
+
+        if ((i > 4.5*N/10 && i < 5.5*N/10))
+            x[IX(i,0 )] += 0.4;
+
+        else if ((i > 0.5*N/10 && i < 1.8*N/10))
+            x[IX(i,0 )] += 0.4;
+        else if ((i > 7.8*N/10 && i < 8.9*N/10))
+            x[IX(i,0 )] += 0.4;
 
 
         // upper border
-        x[IX(i, N + 1)] = b == 2 ? -x[IX(i, N)] : x[IX(i, N)]; // bounded box boundary conditions
-        x[IX(i, N + 1)] = 0;
-    }
-
-
-
-    // implementing internal flow obstacles
-    if(b != 0) {  // only changed boundaries for flow -> b = 1,2
-        for ( int i=1 ; i<=N ; i++ ) {
-            for ( int j=1 ; j<=N ; j++ ) {
-                    x[IX(i-1,j)] = b==1 ? -x[IX(i,j)] : x[IX(i,j)];
-                    x[IX(i+1,j)] = b==1 ? -x[IX(i,j)] : x[IX(i,j)];
-                    x[IX(i,j-1 )] = b==2 ? -x[IX(i,j)] : x[IX(i,j)];
-                    x[IX(i,j+1)] = b==2 ? -x[IX(i,j)] : x[IX(i,j)];
-
-            }
-        }
+        x[IX(i,N+1)] = b==2 ? -x[IX(i,N)] : x[IX(i,N)]; // bounded box boundary conditions
     }
 
     // define edge cells as median of neighborhood
@@ -479,17 +502,27 @@ void Simulation::set_bnd(int b, float * x)
 
 
 
-void Simulation::get_from_UI(float *dens, float *u, float *v, float *dens_prev, float *u_prev, float *v_prev, float t)
+void Simulation::get_from_UI(float *dens, float *u, float *v, float *dens_prev, float *u_prev, float *v_prev)
 {
     // adds density and/or velocity in this function
     for ( int i=1 ; i<=N ; i++ ) {
         for ( int j=1 ; j<=N ; j++ ) {
 
-            // Density input for nice jets
-            if ((i > 4.6*N/10 && i < 5.4*N/10) && (j<10))
-                dens[IX(i,j)] = 1.0;
+//            // Density input for nice jets
+//            if ((i > 2.*N/10 and i < 5.*N/10) && (j<5))
+//                dens_prev[IX(i,j)] = 1.0;
+//                dens[IX(i,j)] = 1.0;
+//
+//            // Density input for nice jets
+//            if ((i > 2.*N/10 and i < 5.*N/10) && (j<5))
+//                u_prev[IX(i,j)] = 1.0;
+//                u[IX(i,j)] = 1.0;
         }
     }
+
+
+
+
 }
 
 

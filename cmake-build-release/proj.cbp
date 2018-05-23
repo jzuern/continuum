@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="proj"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/jannik/Desktop/continuum/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/jannik/Desktop/continuum/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/jannik/Desktop/continuum/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="proj">
+				<Option output="/home/jannik/Desktop/continuum/cmake-build-release/proj" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/jannik/Desktop/continuum/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/local/cuda-9.0/include"/>
+					<Add directory="/home/jannik/Desktop/continuum/include"/>
+					<Add directory="/usr/include/gtkmm-3.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include"/>
+					<Add directory="/usr/include/atkmm-1.6"/>
+					<Add directory="/usr/include/gtk-3.0/unix-print"/>
+					<Add directory="/usr/include/gdkmm-3.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include"/>
+					<Add directory="/usr/include/giomm-2.4"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/giomm-2.4/include"/>
+					<Add directory="/usr/include/pangomm-1.4"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/pangomm-1.4/include"/>
+					<Add directory="/usr/include/glibmm-2.4"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/glibmm-2.4/include"/>
+					<Add directory="/usr/include/gtk-3.0"/>
+					<Add directory="/usr/include/at-spi2-atk/2.0"/>
+					<Add directory="/usr/include/at-spi-2.0"/>
+					<Add directory="/usr/include/dbus-1.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/dbus-1.0/include"/>
+					<Add directory="/usr/include/gio-unix-2.0"/>
+					<Add directory="/usr/include/mirclient"/>
+					<Add directory="/usr/include/mircore"/>
+					<Add directory="/usr/include/mircookie"/>
+					<Add directory="/usr/include/cairo"/>
+					<Add directory="/usr/include/pango-1.0"/>
+					<Add directory="/usr/include/harfbuzz"/>
+					<Add directory="/usr/include/atk-1.0"/>
+					<Add directory="/usr/include/cairomm-1.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/cairomm-1.0/include"/>
+					<Add directory="/usr/include/pixman-1"/>
+					<Add directory="/usr/include/freetype2"/>
+					<Add directory="/usr/include/libpng12"/>
+					<Add directory="/usr/include/sigc++-2.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/sigc++-2.0/include"/>
+					<Add directory="/usr/include/gdk-pixbuf-2.0"/>
+					<Add directory="/usr/include/glib-2.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 proj"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="proj/fast">
+				<Option output="/home/jannik/Desktop/continuum/cmake-build-release/proj" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/jannik/Desktop/continuum/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/local/cuda-9.0/include"/>
+					<Add directory="/home/jannik/Desktop/continuum/include"/>
+					<Add directory="/usr/include/gtkmm-3.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include"/>
+					<Add directory="/usr/include/atkmm-1.6"/>
+					<Add directory="/usr/include/gtk-3.0/unix-print"/>
+					<Add directory="/usr/include/gdkmm-3.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include"/>
+					<Add directory="/usr/include/giomm-2.4"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/giomm-2.4/include"/>
+					<Add directory="/usr/include/pangomm-1.4"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/pangomm-1.4/include"/>
+					<Add directory="/usr/include/glibmm-2.4"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/glibmm-2.4/include"/>
+					<Add directory="/usr/include/gtk-3.0"/>
+					<Add directory="/usr/include/at-spi2-atk/2.0"/>
+					<Add directory="/usr/include/at-spi-2.0"/>
+					<Add directory="/usr/include/dbus-1.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/dbus-1.0/include"/>
+					<Add directory="/usr/include/gio-unix-2.0"/>
+					<Add directory="/usr/include/mirclient"/>
+					<Add directory="/usr/include/mircore"/>
+					<Add directory="/usr/include/mircookie"/>
+					<Add directory="/usr/include/cairo"/>
+					<Add directory="/usr/include/pango-1.0"/>
+					<Add directory="/usr/include/harfbuzz"/>
+					<Add directory="/usr/include/atk-1.0"/>
+					<Add directory="/usr/include/cairomm-1.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/cairomm-1.0/include"/>
+					<Add directory="/usr/include/pixman-1"/>
+					<Add directory="/usr/include/freetype2"/>
+					<Add directory="/usr/include/libpng12"/>
+					<Add directory="/usr/include/sigc++-2.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/sigc++-2.0/include"/>
+					<Add directory="/usr/include/gdk-pixbuf-2.0"/>
+					<Add directory="/usr/include/glib-2.0"/>
+					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 proj/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jannik/Desktop/continuum/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/jannik/Desktop/continuum/cmake-build-release/CMakeFiles/proj.dir/proj_generated_main.cu.o">
+			<Option target="proj"/>
+		</Unit>
+		<Unit filename="/home/jannik/Desktop/continuum/main.cu">
+			<Option target="proj"/>
+		</Unit>
+		<Unit filename="/home/jannik/Desktop/continuum/numerical_kernels.h">
+			<Option target="proj"/>
+		</Unit>
+		<Unit filename="/home/jannik/Desktop/continuum/simulation.cpp">
+			<Option target="proj"/>
+		</Unit>
+		<Unit filename="/home/jannik/Desktop/continuum/simulation.h">
+			<Option target="proj"/>
+		</Unit>
+		<Unit filename="/home/jannik/Desktop/continuum/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
