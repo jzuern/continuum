@@ -22,12 +22,12 @@ public:
     Gtk::EventBox box;
     guint8 * img_data;
 
-    // old
-    float ** data_array_old;
-    float ** data_array_new;
-
     // simulation stuff
     int time_step_counter = 0;
+
+    // numerical parameters
+
+    int gauss_seidel_iterations = 20;
 
     const int height = 250;
     const int width = 250;
@@ -62,11 +62,10 @@ public:
 
     // functions
     bool on_timeout(); //return true to keep the timeout and false to end it
-    bool on_timeout_2(); //return true to keep the timeout and false to end it
-
-    void update_view(float ** data_array_new);
-    void update_view_2(float * dens);
+    void update_view(float * dens);
     bool on_eventbox_button_press(GdkEventButton*);
+
+    // printing
     void print_helper();
 
     Simulation();

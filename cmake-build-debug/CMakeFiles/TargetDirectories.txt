@@ -1,3 +1,0 @@
-/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/jannik/Desktop/continuum/cmake-build-debug/CMakeFiles/proj.dir

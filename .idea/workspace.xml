@@ -14,11 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7ab37cdf-96e6-4ab4-9260-c5af225af475" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/proj.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/proj.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/proj.dir/proj_generated_main.cu.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/proj.dir/proj_generated_main.cu.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/proj.dir/simulation.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/proj.dir/simulation.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/proj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/proj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/proj.dir/proj_generated_main.cu.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/proj.dir/proj_generated_main.cu.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/proj.dir/simulation.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/CMakeFiles/proj.dir/simulation.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-release/proj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-release/proj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cu" beforeDir="false" afterPath="$PROJECT_DIR$/main.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/simulation.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation.h" beforeDir="false" afterPath="$PROJECT_DIR$/simulation.h" afterDir="false" />
@@ -38,8 +36,8 @@
       <file leaf-file-name="main.cu" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cu">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -47,17 +45,25 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="102">
+                <caret line="6" selection-start-line="6" selection-end-line="6" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="simulation.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+            <state relative-caret-position="782">
+              <caret line="104" column="1" lean-forward="true" selection-start-line="104" selection-start-column="1" selection-end-line="104" selection-end-column="1" />
               <folding>
                 <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#5140#5923#0" />
-                <element signature="e#5926#6479#0" />
-                <element signature="e#6482#6740#0" />
-                <element signature="e#9978#11067#0" />
               </folding>
             </state>
           </provider>
@@ -66,8 +72,8 @@
       <file leaf-file-name="simulation.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simulation.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+            <state relative-caret-position="283">
+              <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -76,8 +82,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>data_array_new</find>
-      <find>N</find>
       <find>get</find>
       <find>proj</find>
       <find>from</find>
@@ -106,6 +110,8 @@
       <find>get_from</find>
       <find>sleep</find>
       <find>timeout</find>
+      <find>button</find>
+      <find>_2</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -127,8 +133,9 @@
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/numerical_kernels.h" />
         <option value="$PROJECT_DIR$/numerical_kernels.cu" />
-        <option value="$PROJECT_DIR$/main.cu" />
         <option value="$USER_HOME$/Dropbox/develop/C++/FluidDemo/fluidDemo.cpp" />
+        <option value="$PROJECT_DIR$/main.cu" />
+        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/simulation.cpp" />
         <option value="$PROJECT_DIR$/simulation.h" />
       </list>
@@ -159,6 +166,17 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="continuum" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Project Files">
           <expand>
@@ -174,17 +192,6 @@
             <path>
               <item name="Root" type="cbb8eebc:String" user="Root" />
               <item name="continuum" type="cbb8eebc:String" user="continuum" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="proj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="continuum" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -240,11 +247,13 @@
       <workItem from="1526986256732" duration="20979000" />
       <workItem from="1527057420834" duration="4069000" />
       <workItem from="1527068676566" duration="4222000" />
+      <workItem from="1527159669095" duration="308000" />
+      <workItem from="1527160005079" duration="888000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39365000" />
+    <option name="totallyTimeSpent" value="40561000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -264,9 +273,8 @@
       <window_info anchor="bottom" id="Messages" order="0" sideWeight="0.8480326" weight="0.32738718" />
       <window_info anchor="bottom" id="CMake" order="3" sideWeight="0.75202155" weight="0.32843652" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.15196744" side_tool="true" weight="0.32805908" />
-      <window_info anchor="bottom" id="Find" order="5" weight="0.32948583" />
       <window_info anchor="bottom" id="Version Control" order="2" weight="0.32948583" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.8636364" weight="0.35152152" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.8636364" visible="true" weight="0.35152152" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32948583" />
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -277,6 +285,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.32948583" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,13 +303,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/simulation.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -531,9 +533,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
           <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding>
-            <element signature="e#86#104#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -581,32 +580,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cu">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="102">
+            <caret line="6" selection-start-line="6" selection-end-line="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/simulation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+        <state relative-caret-position="782">
+          <caret line="104" column="1" lean-forward="true" selection-start-line="104" selection-start-column="1" selection-end-line="104" selection-end-column="1" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#5140#5923#0" />
-            <element signature="e#5926#6479#0" />
-            <element signature="e#6482#6740#0" />
-            <element signature="e#9978#11067#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+        <state relative-caret-position="283">
+          <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
         </state>
       </provider>
     </entry>

@@ -14,7 +14,7 @@ using namespace std;
 Simulation::Simulation(){
 
     set_default_size(width, height);
-    set_title("Gtkmm Programming - C++");
+    set_title("Continuum");
     set_position(Gtk::WIN_POS_CENTER);
 
     box.add(img);
@@ -25,34 +25,10 @@ Simulation::Simulation(){
             sigc::mem_fun(*this, &Simulation::on_eventbox_button_press) );
 
 
-
     int middle_x = width / 2;
     int middle_y = height / 2;
 
     img_data = new guint8[3*height*width];
-
-//    data_array_new = new float*[height];
-//    for(int i = 0; i < height; ++i) data_array_new[i] = new float[width];
-//
-//    data_array_old = new float*[height];
-//    for(int i = 0; i < height; ++i) data_array_old[i] = new float[width];
-//
-//    // populate data array (starting conditions)
-//    for (int i = 0; i < width; i++)
-//    {
-//        for (int j = 0; j < height; j++)
-//        {
-//            data_array_new[i][j] = 0.0;
-//            if (i > 1.6*middle_x and j > 1.6*middle_y)
-//            {
-//                data_array_new[i][j] = 1.0;
-//            }
-//            if ((i-middle_x)*(i-middle_x) + (j-middle_y)*(j-middle_y) < 100*100)
-//            {
-//                data_array_new[i][j] = 0.8;
-//            }
-//        }
-//    }
 
     u = new float[size];
     v = new float[size];
@@ -65,23 +41,16 @@ Simulation::Simulation(){
     initializeGrid();
     initializeFluid();
 
-//    print_helper();
-
     // create slot for timeout signal
     int timeout_value = 50; //in ms
-//    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout);
-    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_2);
+    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout);
 
     //connect slot to signal
     Glib::signal_timeout().connect(my_slot, timeout_value);
 
     show_all_children();
 
-
-    update_view_2(dens);
-//    print_helper();
-//    update_view(data_array_new);
-
+    update_view(dens);
 
 }
 
@@ -91,16 +60,6 @@ Simulation::~Simulation(){
 void Simulation::print_helper()
 {
     int every_n = 1;
-//    printf("Density Array: \n");
-//
-//    for (int i = 0; i < width; i+=every_n)
-//    {
-//        for (int j = 0; j < height; j+=every_n)
-//        {
-//            printf("%.5e ", dens[IX(i,j)]);
-//        }
-//        printf("\n");
-//    }
 
     printf("Velocity u Array: \n");
 
@@ -126,117 +85,28 @@ void Simulation::print_helper()
 }
 
 
-bool Simulation::on_timeout(){
+bool Simulation::on_timeout() {
 
     time_step_counter += 1;
-
-    // update old_data
-    data_array_old = data_array_new;
-
-    float clf = 0.42; // must be smaller than 0.5, otherwise instable!
-
-    std::clock_t start;
-    start = std::clock();
-
-    // update data array
-    for (int i = 1; i < width-1; i++)
-    {
-        for (int j = 1; j < height-1; j++)
-        {
-            float lower = data_array_new[i][j-1];
-            float upper = data_array_new[i][j+1];
-            float left = data_array_new[i-1][j];
-            float right = data_array_new[i+1][j];
-            // diffuse
-            data_array_new[i][j] = data_array_old[i][j] + clf*(lower + upper + left + right - 4*data_array_old[i][j]);
-        }
-    }
-
-    // your test
-    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
-
-    // update view of data array
-    update_view(data_array_new);
-
-    return true;
-}
-
-bool Simulation::on_timeout_2() {
-
-    time_step_counter += 1;
-
     cout<< "Iteration " << time_step_counter << endl;
     std::clock_t start;
     start = std::clock();
 
-//    print_helper();
-
-
-//    get_from_UI( dens,u,v,dens_prev, u_prev, v_prev); // external influence on fluid
-//    printf("completed get_from_UI ");
-
-
-
-    printf("\nbefore vel_step \n");
     // NAVIER-STOKES SOLUTION: VELOCITY FIELD AND DENSITY FIELD SEPARATELY SOLVED
     vel_step( u, v, u_prev, v_prev, visc, dt);
     printf("completed vel_step ");
-    printf("\nafter vel_step \n");
 
     dens_step( dens, dens_prev, u, v, diff, dt);
     printf("completed dens_step \n");
 
-
     std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
-
-    update_view_2(dens);
-
-    printf("completed update_view_2 \n");
-
+    update_view(dens);
+    printf("completed update_view\n");
 }
 
 
-
-void Simulation::update_view(float ** data_array_new)
+void Simulation::update_view(float * dens)
 {
-
-
-    // update view of data array
-    for (int i = 0; i < width; i++)
-    {
-        for (int j = 0; j < height; j++)
-        {
-            int ii = 3*(i * width + j);
-
-            double value = data_array_new[i][j] * 255.0;
-
-            img_data[ii] = guint8(value);
-            img_data[ii+1] = guint8(value);
-            img_data[ii+2] = guint8(value);
-        }
-    }
-
-
-    int rowstride = 3*width;
-    bool has_alpha = false;
-    int bits_per_sample = 8;
-
-
-    Glib::RefPtr<Gdk::Pixbuf> ref_dest =
-            Gdk::Pixbuf::create_from_data (
-                    img_data, Gdk::COLORSPACE_RGB,has_alpha,bits_per_sample,width,height,rowstride);
-
-    img.clear();
-    img.set(ref_dest);
-
-}
-
-
-
-void Simulation::update_view_2(float * dens)
-{
-
-
 
     // update view of data array
     for (int i = 0; i < width; i++)
@@ -282,9 +152,6 @@ bool Simulation::on_eventbox_button_press(GdkEventButton* e)
         {
             if ((i - y)*(i - y) + (j - x)*(j - x) < 5*5)
             {
-//                data_array_old[i][j] = 1.0f;
-                printf("adding density");
-                dens_prev[IX(i,j)] = 1.0;
                 dens[IX(i,j)] = 1.0;
             }
         }
@@ -312,7 +179,7 @@ void Simulation::initializeFluid()
     for ( int i=0 ; i<=N ; i++ ) {
         for ( int j=0 ; j<=N ; j++ ) {
             u[IX(i,j)] = 0.1; // u velocity at t=0
-            v[IX(i,j)] = 0.1; // v velocity at t=0
+            v[IX(i,j)] = 0.0; // v velocity at t=0
             dens[IX(i,j)] = 1.0; // density at t=0
         }
     }
@@ -324,9 +191,8 @@ void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
     // used for density, u-component and v-component of velocity field separately
 
     float a=dt*diff*N*N;
-    int nIter = 10;
 
-    for (int k=0 ; k < nIter ; k++ ) {
+    for (int k=0 ; k < gauss_seidel_iterations ; k++ ) {
         for (int i=1 ; i<=N ; i++ ) {
             for (int j=1 ; j<=N ; j++ ) {
                 x[IX(i,j)] = (x0[IX(i,j)] + a*(x[IX(i-1,j)]+x[IX(i+1,j)]+x[IX(i,j-1)]+x[IX(i,j+1)]))/(1+4*a);
@@ -467,8 +333,6 @@ void Simulation::set_bnd(int b, float * x)
         // left border
 
         x[IX(0 ,i)] = b==1 ? -x[IX(1,i)] : x[IX(1,i)]; // bounded box boundary conditions
-
-
 
         // right border
         x[IX(N+1,i)] = b==1 ? -x[IX(N,i)] : x[IX(N,i)]; // bounded box boundary conditions

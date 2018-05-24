@@ -15,14 +15,18 @@ int main(int argc, char* argv[])
 {
 
     // i -> Index right/left
-// j -> Index up/down
-// u -> velocity right/left
-// v -> velocity up/down
+    // j -> Index up/down
+    // u -> velocity right/left
+    // v -> velocity up/down
 
-
+    // open GUI window
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "continuum");
+    
+    // initiate simulation instance
     Simulation sim;
-    //The Gui Window is displayed
+    
+    
+    //Run the app with a simulation
     return app->run(sim);
 }
 
