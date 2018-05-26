@@ -153,6 +153,7 @@ bool Simulation::on_eventbox_button_press(GdkEventButton* e)
             if ((i - y)*(i - y) + (j - x)*(j - x) < 5*5)
             {
                 dens[IX(i,j)] = 1.0;
+                u[IX(i,j)] += 0.4;
             }
         }
     }
@@ -251,6 +252,7 @@ void Simulation::add_source (float * x, float * s, float dt )
     }
 }
 
+
 void Simulation::dens_step (float * x, float * x0, float * u, float * v, float diff,float dt)
 {
 
@@ -328,33 +330,44 @@ void Simulation::set_bnd(int b, float * x)
     // define boundary values for velocity and density
 
 
-    for (int i=1 ; i<=N; i++ ) {
+    for (int i=0 ; i<=N+1; i++ ) {
 
-        // left border
+        if (b == 0) // density
+        {
+            x[IX(0,i)] = x[IX(1,i)]; // left
+            x[IX(N+1,i)] = x[IX(N,i)];// right
+            x[IX(i,0 )] = x[IX(i,1)];// bottom
+            x[IX(i,N+1)] = x[IX(i,N)]; // top
+        }
 
-        x[IX(0 ,i)] = b==1 ? -x[IX(1,i)] : x[IX(1,i)]; // bounded box boundary conditions
+        if (b == 1) // u velocity component
+        {
+            x[IX(0,i)] = -x[IX(1,i)];// left
+            x[IX(N+1,i)] = -x[IX(N,i)];// right
+            x[IX(i,0 )] = x[IX(i,1)];// bottom
+            x[IX(i,N+1)] = x[IX(i,N)];// top
+        }
 
-        // right border
-        x[IX(N+1,i)] = b==1 ? -x[IX(N,i)] : x[IX(N,i)]; // bounded box boundary conditions
-
-
-        // bottom border
-        //        x[IX(i,0 )] = b==2 ? -x[IX(i,1)] : x[IX(i,1)]; // bounded box boundary conditions
-
-        // make jets at the bottom
-        x[IX(i,0 )] = 0;
-
-        if ((i > 4.5*N/10 && i < 5.5*N/10))
-            x[IX(i,0 )] += 0.4;
-
-        else if ((i > 0.5*N/10 && i < 1.8*N/10))
-            x[IX(i,0 )] += 0.4;
-        else if ((i > 7.8*N/10 && i < 8.9*N/10))
-            x[IX(i,0 )] += 0.4;
+        if (b == 2) // v velocity component
+        {
+            x[IX(0,i)] = x[IX(1,i)]; // left
+            x[IX(N+1,i)] = x[IX(N,i)]; // right
+            x[IX(i,0 )] = -x[IX(i,1)]; // bottom
+            x[IX(i,N+1)] = -x[IX(i,N)];// top
+        }
 
 
-        // upper border
-        x[IX(i,N+1)] = b==2 ? -x[IX(i,N)] : x[IX(i,N)]; // bounded box boundary conditions
+//        if ((i > 0.0*N && i < 0.5*N))
+//            x[IX(i,1)] = 0.8;
+
+        if (b == 1 and i > 0.5*N) // u velocity component
+        {
+            x[IX(1,i)] = 1.0;// left
+        }
+
+//        if ((i > 0.5*N && i < 1.0*N))
+//            x[IX(i,N)] = -0.8;
+
     }
 
     // define edge cells as median of neighborhood
@@ -364,30 +377,6 @@ void Simulation::set_bnd(int b, float * x)
     x[IX(N+1,N+1)] = 0.5*(x[IX(N,N+1)]+x[IX(N+1,N )]);
 }
 
-
-
-void Simulation::get_from_UI(float *dens, float *u, float *v, float *dens_prev, float *u_prev, float *v_prev)
-{
-    // adds density and/or velocity in this function
-    for ( int i=1 ; i<=N ; i++ ) {
-        for ( int j=1 ; j<=N ; j++ ) {
-
-//            // Density input for nice jets
-//            if ((i > 2.*N/10 and i < 5.*N/10) && (j<5))
-//                dens_prev[IX(i,j)] = 1.0;
-//                dens[IX(i,j)] = 1.0;
-//
-//            // Density input for nice jets
-//            if ((i > 2.*N/10 and i < 5.*N/10) && (j<5))
-//                u_prev[IX(i,j)] = 1.0;
-//                u[IX(i,j)] = 1.0;
-        }
-    }
-
-
-
-
-}
 
 
 

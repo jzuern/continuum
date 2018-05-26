@@ -14,10 +14,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 
-    // i -> Index right/left
-    // j -> Index up/down
-    // u -> velocity right/left
-    // v -> velocity up/down
+
 
     // open GUI window
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "continuum");
