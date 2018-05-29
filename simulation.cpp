@@ -13,7 +13,7 @@ using namespace std;
 
 Simulation::Simulation(){
 
-    set_default_size(width, height);
+    set_default_size(width,height);
     set_title("Continuum");
     set_position(Gtk::WIN_POS_CENTER);
 
@@ -24,11 +24,7 @@ Simulation::Simulation(){
     box.signal_button_press_event().connect(
             sigc::mem_fun(*this, &Simulation::on_eventbox_button_press) );
 
-
-    int middle_x = width / 2;
-    int middle_y = height / 2;
-
-    img_data = new guint8[3*height*width];
+    img_data = new guint8[3*size];
 
     u = new float[size];
     v = new float[size];
@@ -49,65 +45,40 @@ Simulation::Simulation(){
     Glib::signal_timeout().connect(my_slot, timeout_value);
 
     show_all_children();
-
     update_view(dens);
+    printf("completed update_view\n");
 
 }
 
 Simulation::~Simulation(){
 }
 
-void Simulation::print_helper()
-{
-    int every_n = 1;
-
-    printf("Velocity u Array: \n");
-
-    for (int i = 0; i < width; i+=every_n)
-    {
-        for (int j = 0; j < height; j+=every_n)
-        {
-            printf("%.5e ", u[IX(i,j)]);
-        }
-        printf("\n");
-    }
-
-    printf("Velocity u_prev Array: \n");
-
-    for (int i = 0; i < width; i+=every_n)
-    {
-        for (int j = 0; j < height; j+=every_n)
-        {
-            printf("%.5e ", u_prev[IX(i,j)]);
-        }
-        printf("\n");
-    }
-}
-
 
 bool Simulation::on_timeout() {
 
-    time_step_counter += 1;
+
     cout<< "Iteration " << time_step_counter << endl;
+
+
     std::clock_t start;
     start = std::clock();
 
     // NAVIER-STOKES SOLUTION: VELOCITY FIELD AND DENSITY FIELD SEPARATELY SOLVED
     vel_step( u, v, u_prev, v_prev, visc, dt);
-    printf("completed vel_step ");
-
     dens_step( dens, dens_prev, u, v, diff, dt);
-    printf("completed dens_step \n");
 
-    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+    time_step_counter += 1;
+    float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
+
+    std::cout << "    Step calculation duration: " << time << " ms" << std::endl;
     update_view(dens);
     printf("completed update_view\n");
+
 }
 
 
 void Simulation::update_view(float * dens)
 {
-
     // update view of data array
     for (int i = 0; i < width; i++)
     {
@@ -116,7 +87,6 @@ void Simulation::update_view(float * dens)
             int ii = 3*(i * width + j);
 
             float value = dens[IX(i,j)] * 255.0;
-//            float value = float(i) / width * 255;
 
             img_data[ii] = guint8(value);
             img_data[ii+1] = guint8(value);
@@ -166,8 +136,10 @@ void Simulation::initializeGrid()
 // initialize the grid cell coordinates
 {
     // initialize occ grid
-    for ( int i=1 ; i<=N ; i++ ) {
-        for ( int j=1 ; j<=N ; j++ ) {
+    for ( int i=1 ; i<=width ; i++ )
+    {
+        for ( int j=1 ; j<=height ; j++ )
+        {
             occupiedGrid[IX(i,j)] =false; // u velocity at t=0
         }
     }
@@ -177,11 +149,13 @@ void Simulation::initializeGrid()
 void Simulation::initializeFluid()
 {
     // initialize the fluid state (velocities and density) at t=0
-    for ( int i=0 ; i<=N ; i++ ) {
-        for ( int j=0 ; j<=N ; j++ ) {
-            u[IX(i,j)] = 0.1; // u velocity at t=0
+    for ( int i=0 ; i<=width ; i++ )
+    {
+        for ( int j=0 ; j<=height ; j++ )
+        {
+            u[IX(i,j)] = 0.0; // u velocity at t=0
             v[IX(i,j)] = 0.0; // v velocity at t=0
-            dens[IX(i,j)] = 1.0; // density at t=0
+            dens[IX(i,j)] = 0.0; // density at t=0
         }
     }
 }
@@ -191,17 +165,22 @@ void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
     // diffusion step is obtained by Gauss-Seidel relaxation equation system solver
     // used for density, u-component and v-component of velocity field separately
 
-    float a=dt*diff*N*N;
+    float a=dt*diff*height*width;
 
-    for (int k=0 ; k < gauss_seidel_iterations ; k++ ) {
-        for (int i=1 ; i<=N ; i++ ) {
-            for (int j=1 ; j<=N ; j++ ) {
-                x[IX(i,j)] = (x0[IX(i,j)] + a*(x[IX(i-1,j)]+x[IX(i+1,j)]+x[IX(i,j-1)]+x[IX(i,j+1)]))/(1+4*a);
+    for (int k=0 ; k < gauss_seidel_iterations ; k++ )
+    {
+        for (int i=1 ; i<=width ; i++ )
+        {
+            for (int j=1 ; j<=height ; j++ ) {
+                x[IX(i, j)] = (x0[IX(i, j)] +
+                               a * (x[IX(i - 1, j)] + x[IX(i + 1, j)] + x[IX(i, j - 1)] + x[IX(i, j + 1)])) /
+                              (1 + 4 * a);
             }
         }
-        set_bnd(b, x );
     }
+    set_bnd(b, x );
 }
+
 
 
 void Simulation::advect(int b, float * d, float * d0, float * u, float * v, float dt )
@@ -214,18 +193,24 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
 
     int i, j, i0, j0, i1, j1;
     float x, y, s0, t0, s1, t1, dt0;
-    dt0 = dt*N;
+//    dt0 = dt*N;
+    dt0 = dt*max(width,height);
 
-    for ( i=1 ; i<=N ; i++ ) {
-        for ( j=1 ; j<=N ; j++ ) {
+//    for ( i=1 ; i<=N ; i++ ) {
+        for ( i=1 ; i<=width ; i++ ) {
+
+//            for ( j=1 ; j<=N ; j++ ) {
+                for ( j=1 ; j<=height ; j++ ) {
 
             x = i-dt0*u[IX(i,j)];
             y = j-dt0*v[IX(i,j)];
 
             if (x<0.5) x=0.5;
-            if (x>N+0.5) x=N+ 0.5; i0=(int)x; i1=i0+ 1;
+//            if (x>N+0.5) x=N+ 0.5; i0=(int)x; i1=i0+ 1;
+            if (x>width+0.5) x=width+ 0.5; i0=(int)x; i1=i0+ 1;
             if (y<0.5) y=0.5;
-            if (y>N+0.5) y=N+ 0.5; j0=(int)y; j1=j0+1;
+//            if (y>N+0.5) y=N+ 0.5; j0=(int)y; j1=j0+1;
+            if (y>height+0.5) y=height+ 0.5; j0=(int)y; j1=j0+1;
             s1 = x-i0;
             s0 = 1-s1;
             t1 = y-j0;
@@ -246,8 +231,8 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
 void Simulation::add_source (float * x, float * s, float dt )
 {
     // add sources for velocity field or density field
-    int i, size=(height+2)*(width+2);
-    for ( i=0 ; i<size ; i++ ){
+    for ( int i=0 ; i<size ; i++ )
+    {
         x[i] += dt*s[i];
     }
 }
@@ -294,10 +279,12 @@ void Simulation::project (float * u, float * v, float * p, float * div )
     // this will make the velocity field to have fluid-like swirls as desired
 
     float h;
-    h = 1.0/N;
+    h = 1.0/max(height,width);
 
-    for (int i=1 ; i<=N ; i++ ) {
-        for (int j=1 ; j<=N ; j++ ) {
+    for (int i=1 ; i<=width ; i++ )
+    {
+        for (int j=1 ; j<=height ; j++ )
+        {
             div[IX(i,j)] = -0.5*h*(u[IX(i+1,j)]-u[IX(i-1,j)]+v[IX(i,j+1)]-v[IX(i,j-1)]);
             p[IX(i,j)] = 0;
         }
@@ -306,17 +293,22 @@ void Simulation::project (float * u, float * v, float * p, float * div )
     set_bnd(0, div );
     set_bnd(0, p );
 
-    for (int k=0 ; k<20 ; k++ ) {
-        for (int i=1 ; i<=N ; i++ ) {
-            for (int j=1 ; j<=N ; j++ ) {
+    for (int k=0 ; k<gauss_seidel_iterations ; k++ )
+    {
+        for (int i=1 ; i<=width ; i++ )
+        {
+            for (int j=1 ; j<=height ; j++ )
+            {
                 p[IX(i,j)] = (div[IX( i,j)]+p[IX(i-1,j)]+p[IX(i+1,j)]+p[IX(i,j-1)]+p[IX(i,j+1)])/4;
             }
         }
         set_bnd(0, p );
     }
 
-    for (int i=1 ; i<=N ; i++ ) {
-        for (int j=1 ; j<=N ; j++ ) {
+    for (int i=1 ; i<=width ; i++ )
+    {
+        for (int j=1 ; j<=height ; j++ )
+        {
             u[IX(i,j)] -= 0.5*(p[IX(i+1,j)]-p[IX(i-1,j)])/h;
             v[IX(i,j)] -= 0.5*(p[IX(i,j+1)]-p[IX(i,j-1)])/h;
         }
@@ -328,53 +320,55 @@ void Simulation::project (float * u, float * v, float * p, float * div )
 void Simulation::set_bnd(int b, float * x)
 {
     // define boundary values for velocity and density
-
-
-    for (int i=0 ; i<=N+1; i++ ) {
+    for (int i=0 ; i<height+2; i++ ) {
 
         if (b == 0) // density
         {
             x[IX(0,i)] = x[IX(1,i)]; // left
-            x[IX(N+1,i)] = x[IX(N,i)];// right
-            x[IX(i,0 )] = x[IX(i,1)];// bottom
-            x[IX(i,N+1)] = x[IX(i,N)]; // top
+            x[IX(width+1,i)] = x[IX(width,i)];// right
         }
 
         if (b == 1) // u velocity component
         {
             x[IX(0,i)] = -x[IX(1,i)];// left
-            x[IX(N+1,i)] = -x[IX(N,i)];// right
-            x[IX(i,0 )] = x[IX(i,1)];// bottom
-            x[IX(i,N+1)] = x[IX(i,N)];// top
+            x[IX(width+1,i)] = -x[IX(width,i)];// right
         }
 
         if (b == 2) // v velocity component
         {
             x[IX(0,i)] = x[IX(1,i)]; // left
-            x[IX(N+1,i)] = x[IX(N,i)]; // right
-            x[IX(i,0 )] = -x[IX(i,1)]; // bottom
-            x[IX(i,N+1)] = -x[IX(i,N)];// top
+            x[IX(width+1,i)] = x[IX(width,i)]; // right
         }
 
+        if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 0.5;
+    }
 
-//        if ((i > 0.0*N && i < 0.5*N))
-//            x[IX(i,1)] = 0.8;
+    for (int i=0 ; i<width+2; i++ ) {
 
-        if (b == 1 and i > 0.5*N) // u velocity component
+        if (b == 0) // density
         {
-            x[IX(1,i)] = 1.0;// left
+            x[IX(i,0 )] = x[IX(i,1)];// bottom
+            x[IX(i,height+1)] = x[IX(i,height)]; // top
         }
 
-//        if ((i > 0.5*N && i < 1.0*N))
-//            x[IX(i,N)] = -0.8;
+        if (b == 1) // u velocity component
+        {
+            x[IX(i,0 )] = x[IX(i,1)];// bottom
+            x[IX(i,height+1)] = x[IX(i,height)];// top
+        }
 
+        if (b == 2) // v velocity component
+        {
+            x[IX(i,0 )] = -x[IX(i,1)]; // bottom
+            x[IX(i,height+1)] = -x[IX(i,height)];// top
+        }
     }
 
     // define edge cells as median of neighborhood
-    x[IX(0 ,0 )] = 0.5*(x[IX(1,0 )]+x[IX(0 ,1)]);
-    x[IX(0 ,N+1)] = 0.5*(x[IX(1,N+1)]+x[IX(0 ,N )]);
-    x[IX(N+1,0 )] = 0.5*(x[IX(N,0 )]+x[IX(N+1,1)]);
-    x[IX(N+1,N+1)] = 0.5*(x[IX(N,N+1)]+x[IX(N+1,N )]);
+    x[IX(0 ,0 )] = 0.5f*(x[IX(1,0 )]+x[IX(0 ,1)]);
+    x[IX(0 ,height+1)] = 0.5f*(x[IX(1,height+1)]+x[IX(0 ,height)]);
+    x[IX(width+1,0 )] = 0.5f*(x[IX(width,0 )]+x[IX(width+1,1)]);
+    x[IX(width+1,height+1)] = 0.5f*(x[IX(width,height+1)]+x[IX(width+1,height)]);
 }
 
 
