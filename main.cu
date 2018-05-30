@@ -29,9 +29,6 @@ int main(int argc, char* argv[])
     
     // initiate simulation instance
     Simulation sim;
-
-    // try cuda kernel execution
-    try_cuda();
     
     
     //Run the app with a simulation

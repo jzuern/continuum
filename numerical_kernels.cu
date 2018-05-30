@@ -1,7 +1,4 @@
-////
-//// Created by jannik on 22/05/18.
-////
-//
+
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include "numerical_kernels.h"
@@ -9,72 +6,91 @@
 
 
 
-__global__ void DiffX_GPU(float* d_U, float* d_Ux, int N, int alpha, float* d_stencils, int rank)
-
+__global__ void diffuse_GPU(float *dens, float *dens_prev, int height, int width)
 {
-    printf("hello from thread %i\n", threadIdx.x);
+    // diffusion step is obtained by Gauss-Seidel relaxation equation system solver
+    // used for density, u-component and v-component of velocity field separately
+    float diff = 0.01;
+    const float dt = 0.0001; // incremental time step length
 
+    float a = dt*diff*height*width;
+
+//    printf("in diffuse_GPU\n");
 
     // indices
-    const int b_i =   threadIdx.x;
-    const int b_j = blockIdx.y*blockDim.y + threadIdx.y;
-    const int n = b_i * N + b_j;
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int j = blockIdx.y * blockDim.y + threadIdx.y;
 
-    int row;
-    for (row=0; row<N; ++row)
+    if (i> 1 and i < (width+1) and j > 1 and j < (height+2))
     {
-        float value=0.0;
-        // Compute dot-product between FDM stencil weights and input vector U
-        int diff = 0; // diff is used for automatically taking one-sided difference near boundaries
-        if (row<alpha)
-            diff = alpha - row;
-        else if (row>N-1-alpha)  // row  >   Nx-3 Nx-2 Nx-1
-            diff = N-1-alpha-row;
-        int tmp = (alpha-diff)*rank+alpha;
-        int tmp2 = row + diff;
-        int i;
-        for (i = -alpha; i<alpha+1; ++i)
-            value += (d_U[tmp2+i]*d_stencils[tmp+i])  ;
-        // Store computed approximation
-        d_Ux[row] =   value;
+        printf("dens_prev [IX(%i, %i)] = %f\n", i,j,dens_prev[IX(i, j)]);
+
+        for (int k=0 ; k < 10 ; k++ ) {
+
+            dens[IX(i, j)] = (dens_prev[IX(i, j)] +
+                              a * (dens[IX(i - 1, j)] + dens[IX(i + 1, j)] + dens[IX(i, j - 1)] + dens[IX(i, j + 1)])) /
+                             (1 + 4 * a);
+
+        }
     }
+
 }
 
 
-void try_cuda()
+void try_diffuse(float* dens,float* dens_prev,int height, int width)
 {
-
-    int Nx = 100;
-    int rank = 10;
-    int alpha = 1;
-
-    // Allocate space on device
-    float *d_U, *d_Ux, *d_stencils;
-
-    float *U = new float[Nx];
-    float *Ux = new float[Nx];
-    float *stencils = new float[rank];
-
-    cudaMalloc ((void**) &d_U, Nx*sizeof(float)); // TODO: Error checking
-    cudaMalloc ((void**) &d_Ux, Nx*sizeof(float)); // TODO: Error checking
-    cudaMalloc ((void**) &d_stencils, rank*sizeof(float)); // TODO: Error checking
-
     // Copy data to device
-    cudaMemcpy (d_U, U, Nx*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy (d_stencils, stencils, rank*sizeof(float), cudaMemcpyHostToDevice);
+
+
+    int size = (height+2) * (width+2);
+
+
+    float *dens_d , *dens_prev_d; // device array
+
+    //create device array cudaMalloc ( (void **)&array_name, sizeofmatrixinbytes) ;
+    cudaMalloc((void **) &dens_d , size*sizeof (float) ) ;
+    cudaMalloc((void **) &dens_prev_d , size*sizeof (float) ) ;
+
+    //copy host array to device array; cudaMemcpy ( dest , source , WIDTH , direction )
+    cudaMemcpy ( dens_d , dens , size*sizeof (float) , cudaMemcpyHostToDevice ) ;
+    cudaMemcpy ( dens_prev_d , dens_prev , size*sizeof (float) , cudaMemcpyHostToDevice ) ;
+
 
     // Blocks and grid galore
-    dim3 dimThreadBlock (BLOCK_SIZE_X, BLOCK_SIZE_Y);
-    dim3 dimBlockGrid (Nx/BLOCK_SIZE_X,1);
 
-    DiffX_GPU <<< dimBlockGrid, dimThreadBlock >>> (d_U, d_Ux,  Nx, alpha, d_stencils, rank) ;
+    dim3 threadsPerBlock(100,10);
+    dim3 numBlocks(size / threadsPerBlock.x, size / threadsPerBlock.y);
+
+//    dim3 dimThreadBlock (TX, TY);
+//    dim3 dimBlockGrid (size/TX,1);
+
+    printf(" dens before heat diffusion: \n");
+    pprinter(dens, height, width);
+
+    diffuse_GPU <<< numBlocks, threadsPerBlock >>> (dens_d, dens_prev_d, height, width) ;
 
     cudaThreadSynchronize();
 
-    // Copy result to host
+    // all gpu function blocked till kernel is working
+    //copy back result_array_d to result_array_h
 
-    cudaMemcpy (Ux, d_Ux, Nx*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(dens , dens_d , size*sizeof(float) , cudaMemcpyDeviceToHost) ;
+
+    printf(" dens after heat diffusion: \n");
+    pprinter(dens,height, width);
 
 }
 
 
+void pprinter(float * x, int width, int height)
+{
+    for (int i=0 ; i<=width+1 ; i++ )
+    {
+        for (int j=0 ; j<=height+1 ; j++ )
+        {
+            printf("(%i,%i): %f ", i,j,x[IX(i,j)] );
+        }
+        printf("\n");
+    }
+    printf("\n\n\n");
+}

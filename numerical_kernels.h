@@ -3,8 +3,8 @@
 //
 
 
-#ifndef CUDA_SQUARE_H
-#define CUDA_SQUARE_H
+#ifndef NUMERICAL_KERNELS_H
+#define NUMERICAL_KERNELS_H
 
 #include <stdio.h>
 #include <iostream>
@@ -12,25 +12,19 @@
 #include <cuda_runtime.h>
 #include <cuda.h>
 
-
+#define TX 32
+#define TY 32
 
 using namespace std;
 
-__global__ void heat_kernel( float *data_array_new_device , float *data_array_old_device , const int width );
-void launch_kernel();
-void cuda_init();
+void try_diffuse(float* dens,float* dens_prev,int height, int width);
+void pprinter(float * x, int width, int height);
 
 
-void try_cuda();
-__global__ void DiffX_GPU(float* d_U, float* d_Ux, int N, int alpha, float* d_stencils, int rank);
+// kernel for 2D diffusion equation
+__global__ void diffuse_GPU(float *x,float *x0, int height, int width);
 
 
-// testing
-
-__global__ void MatrixMul( float *Md , float *Nd , float *Pd , const int WIDTH );
-void try_cuda();
-
-void test();
 
 
-#endif //CUDA_SQUARE_H
+#endif //NUMERICAL_KERNELS_H

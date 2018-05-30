@@ -4,6 +4,7 @@
 #include <iostream>
 #include <gtkmm.h>
 #include "simulation.h"
+#include "numerical_kernels.h"
 #include <cmath>        // std::abs
 #include <ctime>  // clock
 
@@ -36,12 +37,19 @@ Simulation::Simulation(){
     dens_prev = new float[size];
     occupiedGrid = new bool[size];
 
+    //cuda stuff
+//    cudaMalloc ((void**) &dens_d, size*sizeof(float)); // TODO: Error checking
+//    cudaMalloc ((void**) &dens_prev_d, size*sizeof(float)); // TODO: Error checking
+
+
+    // grid initialization
     initializeGrid();
     initializeFluid();
 
     // create slot for timeout signal
     int timeout_value = 50; //in ms
-    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout);
+//    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_cfd);
+    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_heat);
 
     //connect slot to signal
     Glib::signal_timeout().connect(my_slot, timeout_value);
@@ -52,26 +60,42 @@ Simulation::Simulation(){
 
 }
 
-Simulation::~Simulation(){
+Simulation::~Simulation()
+{
 }
 
-
-bool Simulation::on_timeout() {
-
+bool Simulation::on_timeout_heat() {
 
     cout<< "Iteration " << time_step_counter << endl;
 
+    std::clock_t start;
+    start = std::clock();
+
+    // solve heat equation
+    try_diffuse(dens,dens_prev,height,width);
+
+
+    float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
+
+    std::cout << "    Step calculation duration: " << time << " ms" << std::endl;
+    update_view(dens);
+    printf("completed update_view\n");
+    SWAP(dens, dens_prev);
+
+}
+
+bool Simulation::on_timeout_cfd() {
+
+    cout<< "Iteration " << time_step_counter << endl;
 
     std::clock_t start;
     start = std::clock();
 
     // NAVIER-STOKES SOLUTION: VELOCITY FIELD AND DENSITY FIELD SEPARATELY SOLVED
-    set_bnd2();
     vel_step( u, v, u_prev, v_prev, visc, dt);
     dens_step( dens, dens_prev, u, v, diff, dt);
-    set_bnd2();
-
     time_step_counter += 1;
+
     float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
 
     std::cout << "    Step calculation duration: " << time << " ms" << std::endl;
@@ -157,9 +181,11 @@ void Simulation::initializeFluid()
     {
         for ( int j=0 ; j<=height ; j++ )
         {
+
             u[IX(i,j)] = 0.0; // u velocity at t=0
             v[IX(i,j)] = 0.0; // v velocity at t=0
             dens[IX(i,j)] = 0.0; // density at t=0
+            if (i > width/2.0) dens[IX(i,j)] = 0.3;
         }
     }
 }

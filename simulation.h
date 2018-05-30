@@ -7,12 +7,8 @@
 
 #include <stdexcept>
 
-#include <cuda_runtime.h>
-#include <cuda.h>
+#include "numerical_kernels.h"
 
-
-#define BLOCK_SIZE_X 1
-#define BLOCK_SIZE_Y 1
 
 #define IX(i,j) ((i)+(width+2)*(j))
 #define SWAP(x0,x) {float *tmp=x0;x0=x;x=tmp;}
@@ -40,8 +36,8 @@ public:
     // simulation stuff
     int time_step_counter = 0;
     const float dt = 0.0001; // incremental time step length
-    const int height = 200;
-    const int width = 200;
+    const int height = 10;
+    const int width = 10;
     const int size = (height+2)*(width+2); // grid size incl. boundaries
 
     // numerical parameters
@@ -67,7 +63,9 @@ public:
 
 //
     // GUI handling functions
-    bool on_timeout(); //return true to keep the timeout and false to end it
+    bool on_timeout_cfd(); //return true to keep the timeout and false to end it
+    bool on_timeout_heat(); //return true to keep the timeout and false to end it
+
     void update_view(float * dens);
     bool on_eventbox_button_press(GdkEventButton*);
 
@@ -78,7 +76,6 @@ public:
     virtual ~Simulation();
 
 
-private:
 
     float * u; // fluid field variables
     float * v;
@@ -88,8 +85,14 @@ private:
     float * dens_prev;
     bool * occupiedGrid; // define flow obstacles
 
+    float * dens_d; // device density
+    float * dens_prev_d; // device previous density
+
     float visc = 0.001; // viscosity
     float diff = 0.01; // diffusion rate
+
+private:
+
 
 };
 
