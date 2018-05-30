@@ -7,10 +7,19 @@
 
 #include <stdexcept>
 
+#include <cuda_runtime.h>
+#include <cuda.h>
+
+
+#define BLOCK_SIZE_X 1
+#define BLOCK_SIZE_Y 1
+
 #define IX(i,j) ((i)+(width+2)*(j))
 #define SWAP(x0,x) {float *tmp=x0;x0=x;x=tmp;}
 
 using namespace std;
+
+
 
 class Simulation : public Gtk::Window{
 public:
@@ -32,9 +41,8 @@ public:
     int time_step_counter = 0;
     const float dt = 0.0001; // incremental time step length
     const int height = 200;
-    const int width = 300;
+    const int width = 200;
     const int size = (height+2)*(width+2); // grid size incl. boundaries
-    //const int N = height;
 
     // numerical parameters
     int gauss_seidel_iterations = 10; // higher -> more accurate
@@ -51,9 +59,13 @@ public:
     void project(float *u, float *v, float *u0, float *v0 );
     void add_source(float *x, float *x0, float dt );
     void set_bnd(int b, float *x);
+    void set_bnd2();
     void diffuse(int,float *x,float *x0, float diff, float dt);
     void advect(int b, float * d, float * d0, float * u, float * v, float dt );
 
+    // cuda code
+
+//
     // GUI handling functions
     bool on_timeout(); //return true to keep the timeout and false to end it
     void update_view(float * dens);

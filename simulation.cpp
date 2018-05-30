@@ -6,9 +6,11 @@
 #include "simulation.h"
 #include <cmath>        // std::abs
 #include <ctime>  // clock
-#include "numerical_kernels.h"
+
 
 using namespace std;
+
+
 
 
 Simulation::Simulation(){
@@ -64,8 +66,10 @@ bool Simulation::on_timeout() {
     start = std::clock();
 
     // NAVIER-STOKES SOLUTION: VELOCITY FIELD AND DENSITY FIELD SEPARATELY SOLVED
+    set_bnd2();
     vel_step( u, v, u_prev, v_prev, visc, dt);
     dens_step( dens, dens_prev, u, v, diff, dt);
+    set_bnd2();
 
     time_step_counter += 1;
     float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
@@ -140,7 +144,7 @@ void Simulation::initializeGrid()
     {
         for ( int j=1 ; j<=height ; j++ )
         {
-            occupiedGrid[IX(i,j)] =false; // u velocity at t=0
+            occupiedGrid[IX(i,j)] = false; // u velocity at t=0
         }
     }
 }
@@ -193,23 +197,18 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
 
     int i, j, i0, j0, i1, j1;
     float x, y, s0, t0, s1, t1, dt0;
-//    dt0 = dt*N;
     dt0 = dt*max(width,height);
-
-//    for ( i=1 ; i<=N ; i++ ) {
-        for ( i=1 ; i<=width ; i++ ) {
-
-//            for ( j=1 ; j<=N ; j++ ) {
-                for ( j=1 ; j<=height ; j++ ) {
+    for ( i=1 ; i<=width ; i++ )
+    {
+        for ( j=1 ; j<=height ; j++ )
+        {
 
             x = i-dt0*u[IX(i,j)];
             y = j-dt0*v[IX(i,j)];
 
             if (x<0.5) x=0.5;
-//            if (x>N+0.5) x=N+ 0.5; i0=(int)x; i1=i0+ 1;
             if (x>width+0.5) x=width+ 0.5; i0=(int)x; i1=i0+ 1;
             if (y<0.5) y=0.5;
-//            if (y>N+0.5) y=N+ 0.5; j0=(int)y; j1=j0+1;
             if (y>height+0.5) y=height+ 0.5; j0=(int)y; j1=j0+1;
             s1 = x-i0;
             s0 = 1-s1;
@@ -247,11 +246,14 @@ void Simulation::dens_step (float * x, float * x0, float * u, float * v, float d
     diffuse(0, x, x0, diff, dt );
     SWAP ( x0,x);
     advect(0, x, x0, u, v, dt );
+    set_bnd2();
 }
 
 
 void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float visc, float dt )
 {
+    set_bnd2();
+
     // executes all routines for motion of velocity field in one time step
     add_source ( u, u0, dt );
     SWAP ( u0, u );
@@ -270,6 +272,9 @@ void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float v
     advect(2, v, v0, u0, v0, dt );
 
     project (u, v, u0, v0 );
+
+    set_bnd2();
+
 }
 
 void Simulation::project (float * u, float * v, float * p, float * div )
@@ -315,6 +320,7 @@ void Simulation::project (float * u, float * v, float * p, float * div )
     }
     set_bnd( 1, u );
     set_bnd( 2, v );
+    set_bnd2();
 }
 
 void Simulation::set_bnd(int b, float * x)
@@ -341,6 +347,7 @@ void Simulation::set_bnd(int b, float * x)
         }
 
         if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 0.5;
+
     }
 
     for (int i=0 ; i<width+2; i++ ) {
@@ -369,6 +376,28 @@ void Simulation::set_bnd(int b, float * x)
     x[IX(0 ,height+1)] = 0.5f*(x[IX(1,height+1)]+x[IX(0 ,height)]);
     x[IX(width+1,0 )] = 0.5f*(x[IX(width,0 )]+x[IX(width+1,1)]);
     x[IX(width+1,height+1)] = 0.5f*(x[IX(width,height+1)]+x[IX(width+1,height)]);
+}
+
+
+void Simulation::set_bnd2()
+{
+    // define boundary values for velocity and density
+    for (int i=0 ; i<height+2; i++ ) {
+
+        for (int j = 0; j<width/5; j++)
+        {
+            if ((i > 0.1*height && i < 0.15*height))
+            {
+                u[IX(i,j)] = -0.5;
+                dens[IX(i,j)] = 0.5;
+                v[IX(i,j)] = 0.5;
+
+                u_prev[IX(i,j)] = 0.5;
+                dens_prev[IX(i,j)] = 0.5;
+                v_prev[IX(i,j)] = 0.5;
+            }
+        }
+    }
 }
 
 

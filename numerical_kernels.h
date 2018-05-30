@@ -21,6 +21,10 @@ void launch_kernel();
 void cuda_init();
 
 
+void try_cuda();
+__global__ void DiffX_GPU(float* d_U, float* d_Ux, int N, int alpha, float* d_stencils, int rank);
+
+
 // testing
 
 __global__ void MatrixMul( float *Md , float *Nd , float *Pd , const int WIDTH );

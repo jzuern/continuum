@@ -1,7 +1,7 @@
 # Jannik
 
 
-- separately handly velocity and density boundary conditions
+- why velocity bc not working??
 - add compilable CUDA kernel code
 
 
