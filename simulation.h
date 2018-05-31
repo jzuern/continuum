@@ -18,9 +18,9 @@ using namespace std;
 
 
 class Simulation : public Gtk::Window{
+
+
 public:
-
-
     // i -> Index right/left (x)
     // j -> Index up/down (y)
     // u -> velocity right/left
@@ -36,8 +36,8 @@ public:
     // simulation stuff
     int time_step_counter = 0;
     const float dt = 0.0001; // incremental time step length
-    const int height = 10;
-    const int width = 10;
+    const int height = 1000;
+    const int width = 1000;
     const int size = (height+2)*(width+2); // grid size incl. boundaries
 
     // numerical parameters
@@ -67,7 +67,7 @@ public:
     bool on_timeout_heat(); //return true to keep the timeout and false to end it
 
     void update_view(float * dens);
-    bool on_eventbox_button_press(GdkEventButton*);
+    bool get_mouse_event(GdkEventButton*);
 
     // constructor
     Simulation();
@@ -76,17 +76,14 @@ public:
     virtual ~Simulation();
 
 
-
-    float * u; // fluid field variables
+    // fluid field variables
+    float * u;
     float * v;
     float * u_prev;
     float * v_prev;
     float * dens;
     float * dens_prev;
     bool * occupiedGrid; // define flow obstacles
-
-    float * dens_d; // device density
-    float * dens_prev_d; // device previous density
 
     float visc = 0.001; // viscosity
     float diff = 0.01; // diffusion rate

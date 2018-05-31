@@ -25,7 +25,7 @@ Simulation::Simulation(){
 
     box.set_events(Gdk::BUTTON_PRESS_MASK);
     box.signal_button_press_event().connect(
-            sigc::mem_fun(*this, &Simulation::on_eventbox_button_press) );
+            sigc::mem_fun(*this, &Simulation::get_mouse_event) );
 
     img_data = new guint8[3*size];
 
@@ -36,11 +36,6 @@ Simulation::Simulation(){
     dens = new float[size];
     dens_prev = new float[size];
     occupiedGrid = new bool[size];
-
-    //cuda stuff
-//    cudaMalloc ((void**) &dens_d, size*sizeof(float)); // TODO: Error checking
-//    cudaMalloc ((void**) &dens_prev_d, size*sizeof(float)); // TODO: Error checking
-
 
     // grid initialization
     initializeGrid();
@@ -68,11 +63,22 @@ bool Simulation::on_timeout_heat() {
 
     cout<< "Iteration " << time_step_counter << endl;
 
+
+
     std::clock_t start;
     start = std::clock();
 
     // solve heat equation
-    try_diffuse(dens,dens_prev,height,width);
+    SWAP(dens, dens_prev);
+
+
+//    printf("on_timeout_heat dens before heat diffusion: \n");
+//    pretty_printer(dens,height, width);
+
+    float * h_T_GPU_result = (float *)malloc((width+2) * (height+2) * sizeof(float));
+
+    try_diffuse(dens,dens_prev,h_T_GPU_result, height,width);
+    dens = h_T_GPU_result;
 
 
     float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
@@ -80,7 +86,8 @@ bool Simulation::on_timeout_heat() {
     std::cout << "    Step calculation duration: " << time << " ms" << std::endl;
     update_view(dens);
     printf("completed update_view\n");
-    SWAP(dens, dens_prev);
+    time_step_counter += 1;
+
 
 }
 
@@ -137,10 +144,12 @@ void Simulation::update_view(float * dens)
 }
 
 
-bool Simulation::on_eventbox_button_press(GdkEventButton* e)
+bool Simulation::get_mouse_event(GdkEventButton* e)
 {
     gdouble x = e->x;
     gdouble y = e->y;
+
+    float radius = 10*10;
 
     printf("found mouse click at x = %f, y = %f\n", x, y);
 
@@ -148,10 +157,12 @@ bool Simulation::on_eventbox_button_press(GdkEventButton* e)
     {
         for (int j = 1; j < height-1; j++)
         {
-            if ((i - y)*(i - y) + (j - x)*(j - x) < 5*5)
+            if ((i - y)*(i - y) + (j - x)*(j - x) < radius)
             {
                 dens[IX(i,j)] = 1.0;
-                u[IX(i,j)] += 0.4;
+                dens_prev[IX(i,j)] = 1.0;
+
+                //u[IX(i,j)] += 0.4;
             }
         }
     }
@@ -177,15 +188,22 @@ void Simulation::initializeGrid()
 void Simulation::initializeFluid()
 {
     // initialize the fluid state (velocities and density) at t=0
-    for ( int i=0 ; i<=width ; i++ )
+    for ( int i=0 ; i<=width+1 ; i++ )
     {
-        for ( int j=0 ; j<=height ; j++ )
+        for ( int j=0 ; j<=height+1 ; j++ )
         {
 
             u[IX(i,j)] = 0.0; // u velocity at t=0
             v[IX(i,j)] = 0.0; // v velocity at t=0
             dens[IX(i,j)] = 0.0; // density at t=0
-            if (i > width/2.0) dens[IX(i,j)] = 0.3;
+
+            u_prev[IX(i,j)] = 0.0; // u velocity at t=0
+            v_prev[IX(i,j)] = 0.0; // v velocity at t=0
+            dens_prev[IX(i,j)] = 0.0; // density at t=0
+
+            if (i > width/2.0) dens[IX(i,j)] = 0.8;
+            if (i > width/2.0) dens_prev[IX(i,j)] = 0.8;
+
         }
     }
 }
