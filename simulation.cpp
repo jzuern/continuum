@@ -43,8 +43,8 @@ Simulation::Simulation(){
 
     // create slot for timeout signal
     int timeout_value = 50; //in ms
-//    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_cfd);
-    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_heat);
+    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_cfd);
+//    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_heat);
 
     //connect slot to signal
     Glib::signal_timeout().connect(my_slot, timeout_value);
@@ -70,16 +70,10 @@ bool Simulation::on_timeout_heat() {
 
     // solve heat equation
     SWAP(dens, dens_prev);
-
-
-//    printf("on_timeout_heat dens before heat diffusion: \n");
-//    pretty_printer(dens,height, width);
-
     float * h_T_GPU_result = (float *)malloc((width+2) * (height+2) * sizeof(float));
+    try_diffuse(dens,dens_prev, height,width, dt, diff);
 
-    try_diffuse(dens,dens_prev,h_T_GPU_result, height,width);
     dens = h_T_GPU_result;
-
 
     float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
 
@@ -201,8 +195,8 @@ void Simulation::initializeFluid()
             v_prev[IX(i,j)] = 0.0; // v velocity at t=0
             dens_prev[IX(i,j)] = 0.0; // density at t=0
 
-            if (i > width/2.0) dens[IX(i,j)] = 0.8;
-            if (i > width/2.0) dens_prev[IX(i,j)] = 0.8;
+            if (i > width/2.0) dens[IX(i,j)] = 1.0;
+            if (i > width/2.0) dens_prev[IX(i,j)] = 1.0;
 
         }
     }
@@ -228,6 +222,19 @@ void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
     }
     set_bnd(b, x );
 }
+
+void Simulation::diffuse_gpu(int b, float * x, float * x_old, float diff, float dt )
+{
+    // diffusion step is obtained by Gauss-Seidel relaxation equation system solver
+    // used for density, u-component and v-component of velocity field separately
+
+    //float * x_gpu = (float *)malloc((width+2) * (height+2) * sizeof(float));
+
+    try_diffuse(x, x_old, height, width, dt, diff);
+
+    set_bnd(b, x );
+}
+
 
 
 
@@ -280,17 +287,36 @@ void Simulation::add_source (float * x, float * s, float dt )
     }
 }
 
+void Simulation::add_source_gpu (float * x, float * s, float dt )
+{
+    float * gpu_result = (float *)malloc((width+2) * (height+2) * sizeof(float));
+    try_source(x, s, gpu_result, height, width, dt);
+    x = gpu_result;
+}
 
-void Simulation::dens_step (float * x, float * x0, float * u, float * v, float diff,float dt)
+
+void Simulation::dens_step (float *& x, float * x0, float * u, float * v, float diff,float dt)
 {
 
     // executes all routines for motion of density field in one time step
-    add_source(x, x0, dt );
+    add_source_gpu(x, x0, dt );
+
     SWAP ( x0,x);
+
+
+#if USE_CUDA
+//    float * x_new = (float *)malloc((width+2) * (height+2) * sizeof(float));
+    diffuse_gpu(0, x0,x, diff, dt );
+//    SWAP(x_new,x);
+//    free(x);
+#else
     diffuse(0, x, x0, diff, dt );
+#endif
+
     SWAP ( x0,x);
+
+
     advect(0, x, x0, u, v, dt );
-    set_bnd2();
 }
 
 
@@ -299,13 +325,33 @@ void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float v
     set_bnd2();
 
     // executes all routines for motion of velocity field in one time step
-    add_source ( u, u0, dt );
+    add_source_gpu ( u, u0, dt );
     SWAP ( u0, u );
-    diffuse(1, u, u0, visc, dt);
 
-    add_source ( v, v0, dt );
+//    diffuse(1, u, u0, diff, dt );
+
+#if USE_CUDA
+//    float * x_new = (float *)malloc((width+2) * (height+2) * sizeof(float));
+    diffuse_gpu(1, u0,u, diff, dt );
+//    SWAP(x_new,u);
+//    free(u);
+#else
+    diffuse(1, u, u0, diff, dt );
+#endif
+
+
+    add_source_gpu ( v, v0, dt );
     SWAP ( v0, v );
-    diffuse(2, v, v0, visc, dt);
+
+//    diffuse(2, v, v0, diff, dt );
+#if USE_CUDA
+//    float * x_new2 = (float *)malloc((width+2) * (height+2) * sizeof(float));
+    diffuse_gpu(1, v0,v, diff, dt );
+//    SWAP(x_new2,v);
+//    free(v);
+#else
+    diffuse(2, v, v0, diff, dt );
+#endif
 
     project ( u, v, u0, v0 );
 
@@ -316,9 +362,6 @@ void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float v
     advect(2, v, v0, u0, v0, dt );
 
     project (u, v, u0, v0 );
-
-    set_bnd2();
-
 }
 
 void Simulation::project (float * u, float * v, float * p, float * div )

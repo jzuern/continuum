@@ -1,6 +1,7 @@
 # Jannik
 
 
+- why cuda
 - why velocity bc not working??
 
 

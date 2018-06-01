@@ -6,10 +6,10 @@
 #define PROJ_SIMULATION_H
 
 #include <stdexcept>
-
 #include "numerical_kernels.h"
 
 
+#define USE_CUDA 1
 #define IX(i,j) ((i)+(width+2)*(j))
 #define SWAP(x0,x) {float *tmp=x0;x0=x;x=tmp;}
 
@@ -36,8 +36,8 @@ public:
     // simulation stuff
     int time_step_counter = 0;
     const float dt = 0.0001; // incremental time step length
-    const int height = 1000;
-    const int width = 1000;
+    const int height = 300;
+    const int width = 300;
     const int size = (height+2)*(width+2); // grid size incl. boundaries
 
     // numerical parameters
@@ -50,18 +50,21 @@ public:
     // fluid dynamics routines
 
     void vel_step(float *u, float *v, float *u_prev, float *v_prev, float visc, float dt); // determine velocity vectors in next time step
-    void dens_step(float *dens, float *dens_prev, float *u, float *v, float diff, float dt); // determine fluid field in next time step
+    void dens_step(float *& dens, float *dens_prev, float *u, float *v, float diff, float dt); // determine fluid field in next time step
 
     void project(float *u, float *v, float *u0, float *v0 );
     void add_source(float *x, float *x0, float dt );
+    void add_source_gpu(float *x, float *x0, float dt );
     void set_bnd(int b, float *x);
     void set_bnd2();
+
     void diffuse(int,float *x,float *x0, float diff, float dt);
+    void diffuse_gpu(int, float * x,float * x0, float diff, float dt);
+
     void advect(int b, float * d, float * d0, float * u, float * v, float dt );
 
     // cuda code
 
-//
     // GUI handling functions
     bool on_timeout_cfd(); //return true to keep the timeout and false to end it
     bool on_timeout_heat(); //return true to keep the timeout and false to end it
