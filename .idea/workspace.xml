@@ -15,6 +15,7 @@
     <list default="true" id="7ab37cdf-96e6-4ab4-9260-c5af225af475" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cu" beforeDir="false" afterPath="$PROJECT_DIR$/main.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/numerical_kernels.cu" beforeDir="false" afterPath="$PROJECT_DIR$/numerical_kernels.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/numerical_kernels.h" beforeDir="false" afterPath="$PROJECT_DIR$/numerical_kernels.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/simulation.cpp" afterDir="false" />
@@ -35,10 +36,11 @@
       <file leaf-file-name="main.cu" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cu">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="33" column="19" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="19" />
+            <state relative-caret-position="459">
+              <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#203#220#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -47,8 +49,8 @@
       <file leaf-file-name="numerical_kernels.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numerical_kernels.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="31" column="35" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+            <state relative-caret-position="187">
+              <caret line="31" column="12" lean-forward="true" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
               <folding>
                 <element signature="e#98#116#0" expanded="true" />
               </folding>
@@ -59,8 +61,8 @@
       <file leaf-file-name="numerical_kernels.cu" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numerical_kernels.cu">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+            <state relative-caret-position="167">
+              <caret line="155" column="22" selection-start-line="155" selection-start-column="22" selection-end-line="155" selection-end-column="22" />
               <folding>
                 <element signature="e#1#26#0" expanded="true" />
               </folding>
@@ -68,26 +70,29 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="simulation.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="simulation.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simulation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="225" column="28" selection-start-line="225" selection-start-column="17" selection-end-line="225" selection-end-column="28" />
+            <state relative-caret-position="347">
+              <caret line="127" column="62" selection-start-line="127" selection-start-column="62" selection-end-line="127" selection-end-column="62" />
               <folding>
                 <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#7737#7766#0" expanded="true" />
-                <element signature="e#8220#8249#0" expanded="true" />
-                <element signature="e#8507#8536#0" expanded="true" />
+                <element signature="e#8315#8441#0" expanded="true" />
+                <element signature="e#8834#8995#0" expanded="true" />
+                <element signature="e#9058#9083#0" expanded="true" />
+                <element signature="e#9195#9225#0" expanded="true" />
+                <element signature="e#9297#9327#0" expanded="true" />
+                <element signature="e#9391#9416#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="simulation.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="simulation.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
+            <state relative-caret-position="204">
+              <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
               <folding>
                 <element signature="e#93#113#0" expanded="true" />
               </folding>
@@ -99,8 +104,8 @@
         <entry file="file://$PROJECT_DIR$/TODO.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="187">
-                <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+              <first_editor relative-caret-position="68">
+                <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
               </first_editor>
               <second_editor />
             </state>
@@ -111,27 +116,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>b =</find>
-      <find>update_</find>
-      <find>rowstride</find>
-      <find>update_view</find>
-      <find>set_bnd2</find>
-      <find>div</find>
-      <find>project</find>
-      <find>set_bnd( 1</find>
-      <find>try_cuda</find>
-      <find>diffuse</find>
-      <find>diffuse_GPU</find>
-      <find>initializ</find>
-      <find>dens before heat diffusion</find>
-      <find>SWAP</find>
-      <find>IX(9, 2)</find>
-      <find>try</find>
-      <find>dens1 [IX(0, 11)]</find>
-      <find>on_timeout_heat</find>
-      <find>on_timeout</find>
-      <find>gpuErrchk</find>
-      <find>on_even</find>
       <find>h_T_old</find>
       <find>x after diffuse</find>
       <find>add_</find>
@@ -140,7 +124,28 @@
       <find>prety</find>
       <find>diffuse_gpu&lt;</find>
       <find>diffuse_gpu</find>
+      <find>add_source_gpu</find>
+      <find>width</find>
+      <find>diffuse_kernel</find>
+      <find>vel_step</find>
+      <find>vel_ste</find>
       <find>try_diffuse</find>
+      <find>try_source</find>
+      <find>project</find>
+      <find>h</find>
+      <find>try_project</find>
+      <find>project_kernel_3</find>
+      <find>try_project_2</find>
+      <find>advect</find>
+      <find>occu</find>
+      <find>occup</find>
+      <find>initialize</find>
+      <find>project_kernel_2</find>
+      <find>occ</find>
+      <find>try_advect</find>
+      <find>set_b</find>
+      <find>advect_gpu</find>
+      <find>update_im</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -164,10 +169,10 @@
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/main.cu" />
         <option value="$PROJECT_DIR$/TODO.md" />
-        <option value="$PROJECT_DIR$/numerical_kernels.cu" />
         <option value="$PROJECT_DIR$/numerical_kernels.h" />
-        <option value="$PROJECT_DIR$/simulation.cpp" />
+        <option value="$PROJECT_DIR$/numerical_kernels.cu" />
         <option value="$PROJECT_DIR$/simulation.h" />
+        <option value="$PROJECT_DIR$/simulation.cpp" />
       </list>
     </option>
   </component>
@@ -291,12 +296,13 @@
       <workItem from="1527758264698" duration="8676000" />
       <workItem from="1527773348528" duration="7595000" />
       <workItem from="1527781532331" duration="2090000" />
-      <workItem from="1527855073081" duration="2123000" />
+      <workItem from="1527855073081" duration="5927000" />
+      <workItem from="1527958797803" duration="4667000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91296000" />
+    <option name="totallyTimeSpent" value="99767000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -342,7 +348,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="25" />
+      <option name="time" value="27" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
@@ -621,10 +627,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cu">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="19" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="19" />
+        <state relative-caret-position="459">
+          <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#203#220#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -632,8 +639,8 @@
     <entry file="file://$PROJECT_DIR$/TODO.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="187">
-            <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <first_editor relative-caret-position="68">
+            <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
           </first_editor>
           <second_editor />
         </state>
@@ -641,18 +648,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/numerical_kernels.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="31" column="35" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+        <state relative-caret-position="187">
+          <caret line="31" column="12" lean-forward="true" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
           <folding>
             <element signature="e#98#116#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/simulation.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+          <folding>
+            <element signature="e#93#113#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/numerical_kernels.cu">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+        <state relative-caret-position="167">
+          <caret line="155" column="22" selection-start-line="155" selection-start-column="22" selection-end-line="155" selection-end-column="22" />
           <folding>
             <element signature="e#1#26#0" expanded="true" />
           </folding>
@@ -661,23 +678,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="225" column="28" selection-start-line="225" selection-start-column="17" selection-end-line="225" selection-end-column="28" />
+        <state relative-caret-position="347">
+          <caret line="127" column="62" selection-start-line="127" selection-start-column="62" selection-end-line="127" selection-end-column="62" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#7737#7766#0" expanded="true" />
-            <element signature="e#8220#8249#0" expanded="true" />
-            <element signature="e#8507#8536#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
-          <folding>
-            <element signature="e#93#113#0" expanded="true" />
+            <element signature="e#8315#8441#0" expanded="true" />
+            <element signature="e#8834#8995#0" expanded="true" />
+            <element signature="e#9058#9083#0" expanded="true" />
+            <element signature="e#9195#9225#0" expanded="true" />
+            <element signature="e#9297#9327#0" expanded="true" />
+            <element signature="e#9391#9416#0" expanded="true" />
           </folding>
         </state>
       </provider>

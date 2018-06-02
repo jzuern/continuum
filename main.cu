@@ -22,8 +22,6 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 
-
-
     // open GUI window
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "continuum.de");
     

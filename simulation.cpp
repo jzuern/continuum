@@ -71,7 +71,7 @@ bool Simulation::on_timeout_heat() {
     // solve heat equation
     SWAP(dens, dens_prev);
     float * h_T_GPU_result = (float *)malloc((width+2) * (height+2) * sizeof(float));
-    try_diffuse(dens,dens_prev, height,width, dt, diff);
+    try_diffuse(dens,dens_prev, height,width, dt, diff, maxiter);
 
     dens = h_T_GPU_result;
 
@@ -115,11 +115,23 @@ void Simulation::update_view(float * dens)
         {
             int ii = 3*(i * width + j);
 
-            float value = dens[IX(i,j)] * 255.0;
+            if (occupiedGrid[IX(i,j)])
+            {
+                img_data[ii] = guint8(255);
+                img_data[ii+1] = guint8(255);
+                img_data[ii+2] = guint8(255);
+            }
+            else
+            {
+//                float value_u = u[IX(i,j)];
+//                float value_v = v[IX(i,j)];
+                float value_dens = dens[IX(i,j)] * 255.0 / 5.0;
 
-            img_data[ii] = guint8(value);
-            img_data[ii+1] = guint8(value);
-            img_data[ii+2] = guint8(value);
+                img_data[ii] = guint8(value_dens);
+                img_data[ii+1] = guint8(value_dens);
+                img_data[ii+2] = guint8(value_dens);
+            }
+
         }
     }
 
@@ -153,8 +165,9 @@ bool Simulation::get_mouse_event(GdkEventButton* e)
         {
             if ((i - y)*(i - y) + (j - x)*(j - x) < radius)
             {
-                dens[IX(i,j)] = 1.0;
-                dens_prev[IX(i,j)] = 1.0;
+//                dens[IX(i,j)] = 1.0;
+//                dens_prev[IX(i,j)] = 1.0;
+                occupiedGrid[IX(i,j)] = true;
 
                 //u[IX(i,j)] += 0.4;
             }
@@ -195,8 +208,8 @@ void Simulation::initializeFluid()
             v_prev[IX(i,j)] = 0.0; // v velocity at t=0
             dens_prev[IX(i,j)] = 0.0; // density at t=0
 
-            if (i > width/2.0) dens[IX(i,j)] = 1.0;
-            if (i > width/2.0) dens_prev[IX(i,j)] = 1.0;
+//            if (i > width/2.0) dens[IX(i,j)] = 1.0;
+//            if (i > width/2.0) dens_prev[IX(i,j)] = 1.0;
 
         }
     }
@@ -209,7 +222,7 @@ void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
 
     float a=dt*diff*height*width;
 
-    for (int k=0 ; k < gauss_seidel_iterations ; k++ )
+    for (int k=0 ; k < maxiter ; k++ )
     {
         for (int i=1 ; i<=width ; i++ )
         {
@@ -223,14 +236,14 @@ void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
     set_bnd(b, x );
 }
 
-void Simulation::diffuse_gpu(int b, float * x, float * x_old, float diff, float dt )
+void Simulation::diffuse_gpu(int b, float * x, float * x_old, float diff, float dt)
 {
     // diffusion step is obtained by Gauss-Seidel relaxation equation system solver
     // used for density, u-component and v-component of velocity field separately
 
     //float * x_gpu = (float *)malloc((width+2) * (height+2) * sizeof(float));
 
-    try_diffuse(x, x_old, height, width, dt, diff);
+    try_diffuse(x, x_old, height, width, dt, diff, maxiter);
 
     set_bnd(b, x );
 }
@@ -266,13 +279,25 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
             t1 = y-j0;
             t0 = 1-t1;
 
-            d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+
-                             t1*d0[IX(i0,j1)])+
-                         s1*(t0*d0[IX(i1,j0)]+
-                             t1*d0[IX(i1,j1)]);
+            bool occ = occupiedGrid[IX(i,j)];
+
+            if(occ == 0) d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+t1*d0[IX(i0,j1)])+s1*(t0*d0[IX(i1,j0)]+t1*d0[IX(i1,j1)]);
+            else
+                d[IX(i,j)] = 0;
+
+//            d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+
+//                             t1*d0[IX(i0,j1)])+
+//                         s1*(t0*d0[IX(i1,j0)]+
+//                             t1*d0[IX(i1,j1)]);
         }
     }
 
+    set_bnd(b, d );
+}
+
+void Simulation::advect_gpu(int b, float * d, float * d0, float * u, float * v, float dt, bool * occ )
+{
+    try_advect( d,  d0,  u,  v, height, width, dt, occ);
     set_bnd(b, d );
 }
 
@@ -289,9 +314,7 @@ void Simulation::add_source (float * x, float * s, float dt )
 
 void Simulation::add_source_gpu (float * x, float * s, float dt )
 {
-    float * gpu_result = (float *)malloc((width+2) * (height+2) * sizeof(float));
-    try_source(x, s, gpu_result, height, width, dt);
-    x = gpu_result;
+    try_source(x, s, height, width, dt);
 }
 
 
@@ -299,69 +322,74 @@ void Simulation::dens_step (float *& x, float * x0, float * u, float * v, float 
 {
 
     // executes all routines for motion of density field in one time step
-    add_source_gpu(x, x0, dt );
-
-    SWAP ( x0,x);
-
 
 #if USE_CUDA
-//    float * x_new = (float *)malloc((width+2) * (height+2) * sizeof(float));
+    add_source_gpu(x, x0, dt );
+    SWAP ( x0,x);
     diffuse_gpu(0, x0,x, diff, dt );
-//    SWAP(x_new,x);
-//    free(x);
+    SWAP ( x0,x);
+    advect_gpu(0, x, x0, u, v, dt , occupiedGrid);
+
 #else
+    add_source(x, x0, dt );
+    SWAP ( x0,x);
     diffuse(0, x, x0, diff, dt );
+    SWAP ( x0,x);
+    advect(0, x, x0, u, v, dt );
 #endif
 
-    SWAP ( x0,x);
 
-
-    advect(0, x, x0, u, v, dt );
 }
 
 
 void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float visc, float dt )
 {
-    set_bnd2();
-
     // executes all routines for motion of velocity field in one time step
+
+#if USE_CUDA
     add_source_gpu ( u, u0, dt );
     SWAP ( u0, u );
-
-//    diffuse(1, u, u0, diff, dt );
-
-#if USE_CUDA
-//    float * x_new = (float *)malloc((width+2) * (height+2) * sizeof(float));
     diffuse_gpu(1, u0,u, diff, dt );
-//    SWAP(x_new,u);
-//    free(u);
-#else
-    diffuse(1, u, u0, diff, dt );
-#endif
-
-
     add_source_gpu ( v, v0, dt );
     SWAP ( v0, v );
-
-//    diffuse(2, v, v0, diff, dt );
-#if USE_CUDA
-//    float * x_new2 = (float *)malloc((width+2) * (height+2) * sizeof(float));
     diffuse_gpu(1, v0,v, diff, dt );
-//    SWAP(x_new2,v);
-//    free(v);
 #else
+    add_source( u, u0, dt );
+    SWAP ( u0, u );
+    diffuse(1, u, u0, diff, dt );
+    add_source( v, v0, dt );
+    SWAP ( v0, v );
     diffuse(2, v, v0, diff, dt );
 #endif
 
+#if USE_CUDA
+    project_gpu(u, v, u0, v0);
+#else
     project ( u, v, u0, v0 );
+#endif
 
     SWAP ( u0, u );
     SWAP ( v0, v );
 
+#if USE_CUDA
+    advect_gpu(1, u, u0, u0, v0, dt , occupiedGrid);
+#else
     advect(1, u, u0, u0, v0, dt );
-    advect(2, v, v0, u0, v0, dt );
+#endif
 
-    project (u, v, u0, v0 );
+
+#if USE_CUDA
+    advect_gpu(2, v, v0, u0, v0, dt,occupiedGrid );
+#else
+    advect(2, v, v0, u0, v0, dt );
+#endif
+
+
+#if USE_CUDA
+    project_gpu(u, v, u0, v0);
+#else
+    project ( u, v, u0, v0 );
+#endif
 }
 
 void Simulation::project (float * u, float * v, float * p, float * div )
@@ -385,7 +413,7 @@ void Simulation::project (float * u, float * v, float * p, float * div )
     set_bnd(0, div );
     set_bnd(0, p );
 
-    for (int k=0 ; k<gauss_seidel_iterations ; k++ )
+    for (int k=0 ; k<maxiter ; k++ )
     {
         for (int i=1 ; i<=width ; i++ )
         {
@@ -407,7 +435,29 @@ void Simulation::project (float * u, float * v, float * p, float * div )
     }
     set_bnd( 1, u );
     set_bnd( 2, v );
-    set_bnd2();
+}
+
+
+void Simulation::project_gpu(float * u, float * v, float * p, float * div )
+{
+    // force routing to be mass conserving (use "hodge decomposition" for obtained velocity field and
+    // eliminate gradient field)
+    // this will make the velocity field to have fluid-like swirls as desired
+
+    float h = 1.0/max(height,width);
+
+    try_project_1(div, u,v,p, height, width, h);
+
+    set_bnd(0, div );
+    set_bnd(0, p );
+
+    try_project_2(p,div, height, width, maxiter);
+
+    try_project_3(u,v,p,height,width,h);
+
+
+    set_bnd( 1, u );
+    set_bnd( 2, v );
 }
 
 void Simulation::set_bnd(int b, float * x)
@@ -433,7 +483,8 @@ void Simulation::set_bnd(int b, float * x)
             x[IX(width+1,i)] = x[IX(width,i)]; // right
         }
 
-        if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 0.5;
+        if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 5.0;
+        if ((i > 0.6*height && i < 0.65*height)) x[IX(i,1)] = 5.0;
 
     }
 
@@ -455,6 +506,21 @@ void Simulation::set_bnd(int b, float * x)
         {
             x[IX(i,0 )] = -x[IX(i,1)]; // bottom
             x[IX(i,height+1)] = -x[IX(i,height)];// top
+        }
+    }
+
+    // implementing internal flow obstacles
+    if(b != 0) {  // only changed boundaries for flow -> b = 1,2
+        for ( int i=1 ; i<=height ; i++ ) {
+            for ( int j=1 ; j<=width ; j++ ) {
+                bool occ = occupiedGrid[IX(i,j)];
+                if(occ == 1){
+                    x[IX(i-1,j)] = b==1 ? -x[IX(i,j)] : x[IX(i,j)];
+                    x[IX(i+1,j)] = b==1 ? -x[IX(i,j)] : x[IX(i,j)];
+                    x[IX(i,j-1 )] = b==2 ? -x[IX(i,j)] : x[IX(i,j)];
+                    x[IX(i,j+1)] = b==2 ? -x[IX(i,j)] : x[IX(i,j)];
+                }
+            }
         }
     }
 

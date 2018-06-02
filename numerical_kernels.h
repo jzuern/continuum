@@ -1,7 +1,3 @@
-//
-// Created by jannik on 5/18/18.
-//
-
 
 #ifndef NUMERICAL_KERNELS_H
 #define NUMERICAL_KERNELS_H
@@ -31,16 +27,24 @@ using namespace std;
 
 __host__ __device__ int iDivUp(int a, int b);
 
-void try_diffuse(float * x,float * x_old, int height, int width, const float diff, const float dt);
-void try_source(float* x,float* s, float* x_result, int height, int width, const float dt);
+void try_diffuse(float * x,float * x_old, int height, int width, const float diff, const float dt, const int maxiter);
+void try_source(float* x,float* s, int height, int width, const float dt);
+void try_advect(float * d, float *  d0, float * u, float * v, const int height, const int width, const float dt, bool * occ);
 
-void pretty_printer(float * x, int width, int height);
+void try_project_1(float * div, float *  u, float * v, float * p, const int height, const int width, const float h);
+void try_project_2(float * p, float *  div, const int height, const int width, const int maxiter);
+void try_project_3(float * u, float *  v, float * p, const int height, const int width, const float h);
 
-// kernel for 2D diffusion equation
+
 __global__ void diffuse_kernel(float *x,float *x0, int height, int width);
 __global__ void add_source_kernel(float *x,float *s, int height, int width);
+__global__ void advect_kernel(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float dt);
 
+__global__ void project_kernel_1(float * d_div,float * d_u,float * d_v,float * d_p, int NX, int NY, float h);
+__global__ void project_kernel_2(float * d_div,float * d_p, const int NX, const int NY);
+__global__ void project_kernel_3(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float h);
 
+void pretty_printer(float * x, int width, int height);
 
 
 #endif //NUMERICAL_KERNELS_H
