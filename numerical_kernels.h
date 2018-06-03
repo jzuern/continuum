@@ -32,7 +32,7 @@ void try_source(float* x,float* s, int height, int width, const float dt);
 void try_advect(float * d, float *  d0, float * u, float * v, const int height, const int width, const float dt, bool * occ);
 
 void try_project_1(float * div, float *  u, float * v, float * p, const int height, const int width, const float h);
-void try_project_2(float * p, float *  div, const int height, const int width, const int maxiter);
+void try_project_2(float * p, float *  div, const int height, const int width, const int maxiter, bool * occ);
 void try_project_3(float * u, float *  v, float * p, const int height, const int width, const float h);
 
 
@@ -45,6 +45,9 @@ __global__ void project_kernel_2(float * d_div,float * d_p, const int NX, const 
 __global__ void project_kernel_3(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float h);
 
 void pretty_printer(float * x, int width, int height);
+void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ);
+
+inline int get_idx(int i,int j, int NX);
 
 
 #endif //NUMERICAL_KERNELS_H

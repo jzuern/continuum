@@ -303,7 +303,7 @@ void try_project_1(float * div, float * u,float * v,float * p, const int height,
 
 
 
-void try_project_2(float * div, float * p, const int height, const int width, const int maxiter)
+void try_project_2(float * div, float * p, const int height, const int width, const int maxiter, bool * occ)
 {
     const int NX = width+2;			// --- Number of discretization points along the x axis
     const int NY = height+2;			// --- Number of discretization points along the y axis
@@ -327,7 +327,7 @@ void try_project_2(float * div, float * p, const int height, const int width, co
 
         // --- Copy results from device to host
         gpuErrchk(cudaMemcpy(p,d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-        //set_bnd(0, p );
+        set_bnd_cp(0, p, NX,NY, occ);
     }
 
     // --- Copy results from device to host
@@ -384,4 +384,81 @@ void pretty_printer(float * x, int width, int height)
         printf("\n");
     }
     printf("\n\n\n");
+}
+
+
+int get_idx(int i, int j, int NX)
+{
+    return (i)+(NX+2)*(j);
+}
+
+void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ)
+{
+    // define boundary values for velocity and density
+    for (int i=0 ; i<NY; i++ ) {
+
+        if (b == 0) // density
+        {
+            x[get_idx(0,i,NX)] = x[get_idx(1,i,NX)]; // left
+            x[get_idx(NX-1,i,NX)] = x[get_idx(NX-2,i,NX)];// right
+        }
+
+        if (b == 1) // u velocity component
+        {
+            x[get_idx(0,i,NX)] = -x[get_idx(1,i,NX)];// left
+            x[get_idx(NX-1,i,NX)] = -x[get_idx(NX-2,i,NX)];// right
+        }
+
+        if (b == 2) // v velocity component
+        {
+            x[get_idx(0,i,NX)] = x[get_idx(1,i,NX)]; // left
+            x[get_idx(NX-1,i,NX)] = x[get_idx(NX-2,i,NX)]; // right
+        }
+
+        if ((i > 0.46*NY && i < 0.5*NY)) x[get_idx(i,1,NX)] = 5.0;
+        if ((i > 0.6*NY && i < 0.65*NY)) x[get_idx(i,1,NX)] = 5.0;
+
+    }
+
+    for (int i=0 ; i<NX; i++ ) {
+
+        if (b == 0) // density
+        {
+            x[get_idx(i,0 ,NX)] = x[get_idx(i,1,NX)];// bottom
+            x[get_idx(i,NY-1,NX)] = x[get_idx(i,NY-2,NX)]; // top
+        }
+
+        if (b == 1) // u velocity component
+        {
+            x[get_idx(i,0,NX )] = x[get_idx(i,1,NX)];// bottom
+            x[get_idx(i,NY-1,NX)] = x[get_idx(i,NY-2,NX)];// top
+        }
+
+        if (b == 2) // v velocity component
+        {
+            x[get_idx(i,0 ,NX)] = -x[get_idx(i,1,NX)]; // bottom
+            x[get_idx(i,NY-1,NX)] = -x[get_idx(i,NY-2,NX)];// top
+        }
+    }
+
+    // implementing internal flow obstacles
+    if(b != 0) {  // only changed boundaries for flow -> b = 1,2
+        for ( int i=1 ; i<=NY-2 ; i++ ) {
+            for ( int j=1 ; j<=NX-2 ; j++ ) {
+                bool oc = occ[get_idx(i,j,NX)];
+                if(oc == 1){
+                    x[get_idx(i-1,j,NX)] = b==1 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                    x[get_idx(i+1,j,NX)] = b==1 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                    x[get_idx(i,j-1,NX)] = b==2 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                    x[get_idx(i,j+1,NX)] = b==2 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                }
+            }
+        }
+    }
+
+    // define edge cells as median of neighborhood
+    x[get_idx(0 ,0 ,NX)]        = 0.5f*(x[get_idx(1,0 ,NX)]       + x[get_idx(0 ,1,NX)]);
+    x[get_idx(0 ,NY-1,NX)]      = 0.5f*(x[get_idx(1,NY-1,NX)]     + x[get_idx(0 ,NY-2,NX)]);
+    x[get_idx(NX-1,0,NX )]      = 0.5f*(x[get_idx(NX-2,0,NX )]    + x[get_idx(NX-1,1,NX)]);
+    x[get_idx(NX-1,NY-1,NX)]    = 0.5f*(x[get_idx(NX-2,NY-1,NX)]  + x[get_idx(NX-1,NY-2,NX)]);
 }

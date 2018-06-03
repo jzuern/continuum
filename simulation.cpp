@@ -451,7 +451,7 @@ void Simulation::project_gpu(float * u, float * v, float * p, float * div )
     set_bnd(0, div );
     set_bnd(0, p );
 
-    try_project_2(p,div, height, width, maxiter);
+    try_project_2(p,div, height, width, maxiter, occupiedGrid);
 
     try_project_3(u,v,p,height,width,h);
 
@@ -483,8 +483,8 @@ void Simulation::set_bnd(int b, float * x)
             x[IX(width+1,i)] = x[IX(width,i)]; // right
         }
 
-        if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 5.0;
-        if ((i > 0.6*height && i < 0.65*height)) x[IX(i,1)] = 5.0;
+        if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 1.0;
+        if ((i > 0.6*height && i < 0.65*height)) x[IX(i,1)] = 1.0;
 
     }
 
