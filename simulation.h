@@ -9,7 +9,7 @@
 #include "numerical_kernels.h"
 
 
-#define USE_CUDA 1
+#define USE_CUDA 0
 
 #define IX(i,j) ((i)+(width+2)*(j))
 #define SWAP(x0,x) {float *tmp=x0;x0=x;x=tmp;}
@@ -37,12 +37,12 @@ public:
     // simulation stuff
     int time_step_counter = 0;
     const float dt = 0.0001; // incremental time step length
-    const int height = 300;
-    const int width = 300;
+    const int height = 200;
+    const int width = 200;
     const int size = (height+2)*(width+2); // grid size incl. boundaries
 
     // numerical parameters
-    int maxiter = 50; // higher -> more accurate
+    int maxiter = 10; // higher -> more accurate
 
 
     void initializeGrid(); // initialize grid variables

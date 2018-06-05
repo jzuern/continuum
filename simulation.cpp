@@ -463,6 +463,8 @@ void Simulation::project_gpu(float * u, float * v, float * p, float * div )
 void Simulation::set_bnd(int b, float * x)
 {
     // define boundary values for velocity and density
+
+    // left and right wall
     for (int i=0 ; i<height+2; i++ ) {
 
         if (b == 0) // density
@@ -483,10 +485,17 @@ void Simulation::set_bnd(int b, float * x)
             x[IX(width+1,i)] = x[IX(width,i)]; // right
         }
 
-        if ((i > 0.46*height && i < 0.5*height)) x[IX(i,1)] = 1.0;
-        if ((i > 0.6*height && i < 0.65*height)) x[IX(i,1)] = 1.0;
-
+        if ((i > 0.2*height && i < 0.4*height)){
+            dens[IX(i,1)] = 1.0;
+            u[IX(i,1)] = 5.0;
+        }
+        if ((i > 0.4*height && i < 0.6*height)){
+            dens[IX(i,width-100)] = 0.8;
+            u[IX(i,width-100)] = 1.0;
+        }
     }
+
+    // upper and lower wall
 
     for (int i=0 ; i<width+2; i++ ) {
 
@@ -529,28 +538,6 @@ void Simulation::set_bnd(int b, float * x)
     x[IX(0 ,height+1)] = 0.5f*(x[IX(1,height+1)]+x[IX(0 ,height)]);
     x[IX(width+1,0 )] = 0.5f*(x[IX(width,0 )]+x[IX(width+1,1)]);
     x[IX(width+1,height+1)] = 0.5f*(x[IX(width,height+1)]+x[IX(width+1,height)]);
-}
-
-
-void Simulation::set_bnd2()
-{
-    // define boundary values for velocity and density
-    for (int i=0 ; i<height+2; i++ ) {
-
-        for (int j = 0; j<width/5; j++)
-        {
-            if ((i > 0.1*height && i < 0.15*height))
-            {
-                u[IX(i,j)] = -0.5;
-                dens[IX(i,j)] = 0.5;
-                v[IX(i,j)] = 0.5;
-
-                u_prev[IX(i,j)] = 0.5;
-                dens_prev[IX(i,j)] = 0.5;
-                v_prev[IX(i,j)] = 0.5;
-            }
-        }
-    }
 }
 
 
