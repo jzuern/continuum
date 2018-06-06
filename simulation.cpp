@@ -485,13 +485,16 @@ void Simulation::set_bnd(int b, float * x)
             x[IX(width+1,i)] = x[IX(width,i)]; // right
         }
 
-        if ((i > 0.2*height && i < 0.4*height)){
-            dens[IX(i,1)] = 1.0;
-            u[IX(i,1)] = 5.0;
-        }
-        if ((i > 0.4*height && i < 0.6*height)){
-            dens[IX(i,width-100)] = 0.8;
-            u[IX(i,width-100)] = 1.0;
+        // additional boundary conditions:
+
+        if ((i > 0.4*height && i < 0.5*height)){
+            dens[IX(1,i)] = 1.0;
+            u[IX(1,i)] = 10.0;
+            //v[IX(1,i)] = -5.0;
+
+            dens[IX(i,1)] = 0.6;
+            u[IX(i,1)] = 10.0;
+
         }
     }
 
@@ -516,6 +519,13 @@ void Simulation::set_bnd(int b, float * x)
             x[IX(i,0 )] = -x[IX(i,1)]; // bottom
             x[IX(i,height+1)] = -x[IX(i,height)];// top
         }
+
+
+//        if ((i > 0.2*width && i < 0.4*width)){
+//            dens[IX(i,1)] = 1.0;
+//            u[IX(i,1)] = 5.0;
+//            v[IX(i,1)] = 5.0;
+//        }
     }
 
     // implementing internal flow obstacles
