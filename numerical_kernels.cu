@@ -3,6 +3,11 @@
 #include <cuda.h>
 #include "numerical_kernels.h"
 
+
+#define get_idx(i,j,NX) ((i)+(NX+2)*(j))
+
+
+
 __host__ __device__ int iDivUp(int a, int b){ return ((a % b) != 0) ? (a / b + 1) : (a / b); }
 
 
@@ -262,6 +267,7 @@ void try_advect(float * d, float *  d0, float * u, float * v, const int height, 
     gpuErrchk(cudaFree(d_d0));
     gpuErrchk(cudaFree(d_u));
     gpuErrchk(cudaFree(d_v));
+    gpuErrchk(cudaFree(d_occ));
 
 }
 
@@ -303,7 +309,7 @@ void try_project_1(float * div, float * u,float * v,float * p, const int height,
 
 
 
-void try_project_2(float * div, float * p, const int height, const int width, const int maxiter, bool * occ)
+void try_project_2(float * div, float * p, const int height, const int width, const int maxiter, bool * occ, float * dens, float * u)
 {
     const int NX = width+2;			// --- Number of discretization points along the x axis
     const int NY = height+2;			// --- Number of discretization points along the y axis
@@ -327,7 +333,8 @@ void try_project_2(float * div, float * p, const int height, const int width, co
 
         // --- Copy results from device to host
         gpuErrchk(cudaMemcpy(p,d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-        set_bnd_cp(0, p, NX,NY, occ);
+        //set_bnd_cp(0, p, NX,NY, occ);
+        try_set_bnd(0,p,width,height,occ,dens,u);
     }
 
     // --- Copy results from device to host
@@ -387,22 +394,23 @@ void pretty_printer(float * x, int width, int height)
 }
 
 
-int get_idx(int i, int j, int NX)
+__global__ void set_bnd_kernel(float * x, const int NX, const int NY, int b, bool * occ, float * dens, float * u)
 {
-    return (i)+(NX+2)*(j);
-}
+    const int i = blockIdx.x * blockDim.x + threadIdx.x ;
+    const int j = blockIdx.y * blockDim.y + threadIdx.y ;
 
-void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ)
-{
-    // define boundary values for velocity and density
-    for (int i=0 ; i<NY; i++ ) {
 
+    // --- Only update "interior" (not boundary) node points
+    if (i>0 && i<NX-1 && j>0 && j<NY-1)
+    {
+        // define boundary values for velocity and density
+
+        // left and right wall
         if (b == 0) // density
         {
             x[get_idx(0,i,NX)] = x[get_idx(1,i,NX)]; // left
             x[get_idx(NX-1,i,NX)] = x[get_idx(NX-2,i,NX)];// right
         }
-
         if (b == 1) // u velocity component
         {
             x[get_idx(0,i,NX)] = -x[get_idx(1,i,NX)];// left
@@ -415,12 +423,7 @@ void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ)
             x[get_idx(NX-1,i,NX)] = x[get_idx(NX-2,i,NX)]; // right
         }
 
-        if ((i > 0.46*NY && i < 0.5*NY)) x[get_idx(i,1,NX)] = 5.0;
-        if ((i > 0.6*NY && i < 0.65*NY)) x[get_idx(i,1,NX)] = 5.0;
-
-    }
-
-    for (int i=0 ; i<NX; i++ ) {
+        // upper and lower wall
 
         if (b == 0) // density
         {
@@ -430,7 +433,7 @@ void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ)
 
         if (b == 1) // u velocity component
         {
-            x[get_idx(i,0,NX )] = x[get_idx(i,1,NX)];// bottom
+            x[get_idx(i,0 ,NX)] = x[get_idx(i,1,NX)];// bottom
             x[get_idx(i,NY-1,NX)] = x[get_idx(i,NY-2,NX)];// top
         }
 
@@ -439,26 +442,66 @@ void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ)
             x[get_idx(i,0 ,NX)] = -x[get_idx(i,1,NX)]; // bottom
             x[get_idx(i,NY-1,NX)] = -x[get_idx(i,NY-2,NX)];// top
         }
-    }
 
-    // implementing internal flow obstacles
-    if(b != 0) {  // only changed boundaries for flow -> b = 1,2
-        for ( int i=1 ; i<=NY-2 ; i++ ) {
-            for ( int j=1 ; j<=NX-2 ; j++ ) {
-                bool oc = occ[get_idx(i,j,NX)];
-                if(oc == 1){
-                    x[get_idx(i-1,j,NX)] = b==1 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
-                    x[get_idx(i+1,j,NX)] = b==1 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
-                    x[get_idx(i,j-1,NX)] = b==2 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
-                    x[get_idx(i,j+1,NX)] = b==2 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
-                }
+
+        // implementing internal flow obstacles
+        if(b != 0) {  // only changed boundaries for flow -> b = 1,2
+
+            bool o = occ[get_idx(i,j, NX)];
+            if(o == 1){
+                x[get_idx(i-1,j,NX)] = b==1 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                x[get_idx(i+1,j,NX)] = b==1 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                x[get_idx(i,j-1,NX)] = b==2 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
+                x[get_idx(i,j+1,NX)] = b==2 ? -x[get_idx(i,j,NX)] : x[get_idx(i,j,NX)];
             }
-        }
-    }
 
-    // define edge cells as median of neighborhood
-    x[get_idx(0 ,0 ,NX)]        = 0.5f*(x[get_idx(1,0 ,NX)]       + x[get_idx(0 ,1,NX)]);
-    x[get_idx(0 ,NY-1,NX)]      = 0.5f*(x[get_idx(1,NY-1,NX)]     + x[get_idx(0 ,NY-2,NX)]);
-    x[get_idx(NX-1,0,NX )]      = 0.5f*(x[get_idx(NX-2,0,NX )]    + x[get_idx(NX-1,1,NX)]);
-    x[get_idx(NX-1,NY-1,NX)]    = 0.5f*(x[get_idx(NX-2,NY-1,NX)]  + x[get_idx(NX-1,NY-2,NX)]);
+        }
+
+
+        // additional boundary conditions:
+
+//        if ((i > 0.4*NY && i < 0.5*NY)) {
+//            dens[get_idx(1, i,NX)] = 1.0;
+//            u[get_idx(1, i,NX)] = 10.0;
+//
+//            dens[get_idx(i, 1,NX)] = 0.6;
+//            u[get_idx(i, 1,NX)] = 10.0;
+//        }
+
+        // define edge cells as median of neighborhood
+        x[get_idx(0 ,0 ,NX)]        = 0.5f*(x[get_idx(1,0,NX )]     + x[get_idx(0 ,1,NX)]);
+        x[get_idx(0 ,NY-1,NX)]      = 0.5f*(x[get_idx(1,NY-1,NX)]   + x[get_idx(0 ,NY-2,NX)]);
+        x[get_idx(NX-1,0,NX )]      = 0.5f*(x[get_idx(NX-2,0 ,NX)]  + x[get_idx(NX-1,1,NX)]);
+        x[get_idx(NX-1,NY-1,NX)]    = 0.5f*(x[get_idx(NX-2,NY-1,NX)]+ x[get_idx(NX-1,NY-2,NX)]);
+    }
+}
+
+
+
+
+
+void try_set_bnd(int b, float * x, const int width, const int height, bool * occ, float * dens, float * u)
+{
+    const int NX = width+2;			    // --- Number of discretization points along the x axis
+    const int NY = height+2;			// --- Number of discretization points along the y axis
+
+    // allocate cuda memory
+    float *d_x;	        gpuErrchk(cudaMalloc((void**)&d_x,		    NX * NY * sizeof(float)));
+
+    // copy host memory to device memory
+    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+
+
+    // Grid size
+    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+
+    set_bnd_kernel <<< dimGrid, dimBlock >>> (d_x, NX, NY, b, occ, dens, u);
+
+
+    // --- Copy results from device to host
+    gpuErrchk(cudaMemcpy(x, d_x, NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+
+    // free device memory
+    gpuErrchk(cudaFree(d_x));
 }

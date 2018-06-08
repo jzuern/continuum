@@ -9,7 +9,7 @@
 #include "numerical_kernels.h"
 
 
-#define USE_CUDA 0
+#define USE_CUDA 1
 
 #define IX(i,j) ((i)+(width+2)*(j))
 #define SWAP(x0,x) {float *tmp=x0;x0=x;x=tmp;}
@@ -54,13 +54,12 @@ public:
     void dens_step(float *& dens, float *dens_prev, float *u, float *v, float diff, float dt); // determine fluid field in next time step
 
     void project(float *u, float *v, float *u0, float *v0 );
-    void project_gpu(float *u, float *v, float *u0, float *v0 );
+    void project_gpu(float *u, float *v, float *u0, float *v0, float * dens );
 
 
     void add_source(float *x, float *x0, float dt );
     void add_source_gpu(float *x, float *x0, float dt );
     void set_bnd(int b, float *x);
-    void set_bnd2();
 
     void diffuse(int,float *x,float *x0, float diff, float dt);
     void diffuse_gpu(int, float * x,float * x0, float diff, float dt);
@@ -71,8 +70,7 @@ public:
     // cuda code
 
     // GUI handling functions
-    bool on_timeout_cfd(); //return true to keep the timeout and false to end it
-    bool on_timeout_heat(); //return true to keep the timeout and false to end it
+    bool on_timeout(); //return true to keep the timeout and false to end it
 
     void update_view(float * dens);
     bool get_mouse_event(GdkEventButton*);

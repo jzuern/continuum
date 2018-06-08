@@ -32,8 +32,10 @@ void try_source(float* x,float* s, int height, int width, const float dt);
 void try_advect(float * d, float *  d0, float * u, float * v, const int height, const int width, const float dt, bool * occ);
 
 void try_project_1(float * div, float *  u, float * v, float * p, const int height, const int width, const float h);
-void try_project_2(float * p, float *  div, const int height, const int width, const int maxiter, bool * occ);
+void try_project_2(float * p, float *  div, const int height, const int width, const int maxiter, bool * occ, float * dens, float * u);
 void try_project_3(float * u, float *  v, float * p, const int height, const int width, const float h);
+
+void try_set_bnd(int b, float * x, const int width, const int height, bool * occ, float * dens, float * u);
 
 
 __global__ void diffuse_kernel(float *x,float *x0, int height, int width);
@@ -44,8 +46,11 @@ __global__ void project_kernel_1(float * d_div,float * d_u,float * d_v,float * d
 __global__ void project_kernel_2(float * d_div,float * d_p, const int NX, const int NY);
 __global__ void project_kernel_3(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float h);
 
+__global__ void set_bnd_kernel(float * d_x, int NX, int NY, int b);
+
+
+
 void pretty_printer(float * x, int width, int height);
-void set_bnd_cp(int b, float * x, int NX, int NY, bool * occ);
 
 inline int get_idx(int i,int j, int NX);
 

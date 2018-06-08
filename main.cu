@@ -9,13 +9,7 @@
 #include "numerical_kernels.cu"
 
 
-// CUDA STUFF
-#include <cuda.h>
-#include <cuda_runtime.h>
-
-
 using namespace std;
-
 
 
 

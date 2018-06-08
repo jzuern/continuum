@@ -43,8 +43,7 @@ Simulation::Simulation(){
 
     // create slot for timeout signal
     int timeout_value = 50; //in ms
-    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_cfd);
-//    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout_heat);
+    sigc::slot<bool>my_slot = sigc::mem_fun(*this, &Simulation::on_timeout);
 
     //connect slot to signal
     Glib::signal_timeout().connect(my_slot, timeout_value);
@@ -59,33 +58,8 @@ Simulation::~Simulation()
 {
 }
 
-bool Simulation::on_timeout_heat() {
 
-    cout<< "Iteration " << time_step_counter << endl;
-
-
-
-    std::clock_t start;
-    start = std::clock();
-
-    // solve heat equation
-    SWAP(dens, dens_prev);
-    float * h_T_GPU_result = (float *)malloc((width+2) * (height+2) * sizeof(float));
-    try_diffuse(dens,dens_prev, height,width, dt, diff, maxiter);
-
-    dens = h_T_GPU_result;
-
-    float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
-
-    std::cout << "    Step calculation duration: " << time << " ms" << std::endl;
-    update_view(dens);
-    printf("completed update_view\n");
-    time_step_counter += 1;
-
-
-}
-
-bool Simulation::on_timeout_cfd() {
+bool Simulation::on_timeout() {
 
     cout<< "Iteration " << time_step_counter << endl;
 
@@ -168,8 +142,6 @@ bool Simulation::get_mouse_event(GdkEventButton* e)
 //                dens[IX(i,j)] = 1.0;
 //                dens_prev[IX(i,j)] = 1.0;
                 occupiedGrid[IX(i,j)] = true;
-
-                //u[IX(i,j)] += 0.4;
             }
         }
     }
@@ -199,7 +171,6 @@ void Simulation::initializeFluid()
     {
         for ( int j=0 ; j<=height+1 ; j++ )
         {
-
             u[IX(i,j)] = 0.0; // u velocity at t=0
             v[IX(i,j)] = 0.0; // v velocity at t=0
             dens[IX(i,j)] = 0.0; // density at t=0
@@ -207,10 +178,6 @@ void Simulation::initializeFluid()
             u_prev[IX(i,j)] = 0.0; // u velocity at t=0
             v_prev[IX(i,j)] = 0.0; // v velocity at t=0
             dens_prev[IX(i,j)] = 0.0; // density at t=0
-
-//            if (i > width/2.0) dens[IX(i,j)] = 1.0;
-//            if (i > width/2.0) dens_prev[IX(i,j)] = 1.0;
-
         }
     }
 }
@@ -240,8 +207,6 @@ void Simulation::diffuse_gpu(int b, float * x, float * x_old, float diff, float 
 {
     // diffusion step is obtained by Gauss-Seidel relaxation equation system solver
     // used for density, u-component and v-component of velocity field separately
-
-    //float * x_gpu = (float *)malloc((width+2) * (height+2) * sizeof(float));
 
     try_diffuse(x, x_old, height, width, dt, diff, maxiter);
 
@@ -284,11 +249,6 @@ void Simulation::advect(int b, float * d, float * d0, float * u, float * v, floa
             if(occ == 0) d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+t1*d0[IX(i0,j1)])+s1*(t0*d0[IX(i1,j0)]+t1*d0[IX(i1,j1)]);
             else
                 d[IX(i,j)] = 0;
-
-//            d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+
-//                             t1*d0[IX(i0,j1)])+
-//                         s1*(t0*d0[IX(i1,j0)]+
-//                             t1*d0[IX(i1,j1)]);
         }
     }
 
@@ -329,7 +289,6 @@ void Simulation::dens_step (float *& x, float * x0, float * u, float * v, float 
     diffuse_gpu(0, x0,x, diff, dt );
     SWAP ( x0,x);
     advect_gpu(0, x, x0, u, v, dt , occupiedGrid);
-
 #else
     add_source(x, x0, dt );
     SWAP ( x0,x);
@@ -346,50 +305,35 @@ void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float v
 {
     // executes all routines for motion of velocity field in one time step
 
+    // GPU
 #if USE_CUDA
     add_source_gpu ( u, u0, dt );
     SWAP ( u0, u );
     diffuse_gpu(1, u0,u, diff, dt );
-    add_source_gpu ( v, v0, dt );
+    add_source_gpu( v, v0, dt );
     SWAP ( v0, v );
-    diffuse_gpu(1, v0,v, diff, dt );
-#else
-    add_source( u, u0, dt );
+    diffuse_gpu(2, v0, v, diff, dt );
+    project_gpu ( u, v, u0, v0, dens);
     SWAP ( u0, u );
-    diffuse(1, u, u0, diff, dt );
+    SWAP ( v0, v );
+    advect_gpu(1, u, u0, u0, v0, dt,occupiedGrid );
+    advect_gpu(2, v, v0, u0, v0, dt,occupiedGrid);
+    project_gpu ( u, v, u0, v0 , dens);
+#else
+    add_source ( u, u0, dt );
+    SWAP ( u0, u );
+    diffuse(1, u0,u, diff, dt );
     add_source( v, v0, dt );
     SWAP ( v0, v );
-    diffuse(2, v, v0, diff, dt );
-#endif
-
-#if USE_CUDA
-    project_gpu(u, v, u0, v0);
-#else
-    project ( u, v, u0, v0 );
-#endif
-
+    diffuse(2, v0, v, diff, dt );
+    project ( u, v, u0, v0);
     SWAP ( u0, u );
     SWAP ( v0, v );
-
-#if USE_CUDA
-    advect_gpu(1, u, u0, u0, v0, dt , occupiedGrid);
-#else
     advect(1, u, u0, u0, v0, dt );
+    advect(2, v, v0, u0, v0, dt);
+    project ( u, v, u0, v0);
 #endif
 
-
-#if USE_CUDA
-    advect_gpu(2, v, v0, u0, v0, dt,occupiedGrid );
-#else
-    advect(2, v, v0, u0, v0, dt );
-#endif
-
-
-#if USE_CUDA
-    project_gpu(u, v, u0, v0);
-#else
-    project ( u, v, u0, v0 );
-#endif
 }
 
 void Simulation::project (float * u, float * v, float * p, float * div )
@@ -438,7 +382,7 @@ void Simulation::project (float * u, float * v, float * p, float * div )
 }
 
 
-void Simulation::project_gpu(float * u, float * v, float * p, float * div )
+void Simulation::project_gpu(float * u, float * v, float * p, float * div, float * dens)
 {
     // force routing to be mass conserving (use "hodge decomposition" for obtained velocity field and
     // eliminate gradient field)
@@ -451,10 +395,23 @@ void Simulation::project_gpu(float * u, float * v, float * p, float * div )
     set_bnd(0, div );
     set_bnd(0, p );
 
-    try_project_2(p,div, height, width, maxiter, occupiedGrid);
+
+
+//    try_project_2(p,div, height, width, maxiter, occupiedGrid, dens, u);
+
+    for (int k=0 ; k<maxiter ; k++ )
+    {
+        for (int i=1 ; i<=width ; i++ )
+        {
+            for (int j=1 ; j<=height ; j++ )
+            {
+                p[IX(i,j)] = (div[IX( i,j)]+p[IX(i-1,j)]+p[IX(i+1,j)]+p[IX(i,j-1)]+p[IX(i,j+1)])/4;
+            }
+        }
+        set_bnd(0, p );
+    }
 
     try_project_3(u,v,p,height,width,h);
-
 
     set_bnd( 1, u );
     set_bnd( 2, v );
@@ -519,13 +476,6 @@ void Simulation::set_bnd(int b, float * x)
             x[IX(i,0 )] = -x[IX(i,1)]; // bottom
             x[IX(i,height+1)] = -x[IX(i,height)];// top
         }
-
-
-//        if ((i > 0.2*width && i < 0.4*width)){
-//            dens[IX(i,1)] = 1.0;
-//            u[IX(i,1)] = 5.0;
-//            v[IX(i,1)] = 5.0;
-//        }
     }
 
     // implementing internal flow obstacles
