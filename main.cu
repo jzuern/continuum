@@ -21,6 +21,8 @@ int main(int argc, char* argv[])
     
     // initiate simulation instance
     Simulation sim;
+
+    sim.init();
     
     
     //Run the app with a simulation

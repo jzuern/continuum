@@ -45,9 +45,6 @@ public:
     int maxiter = 10; // higher -> more accurate
 
 
-    void initializeGrid(); // initialize grid variables
-    void initializeFluid(); // initialize fluid velocities and density distribution at t=0
-
     // fluid dynamics routines
 
     void vel_step(float *u, float *v, float *u_prev, float *v_prev, float visc, float dt); // determine velocity vectors in next time step
@@ -80,6 +77,9 @@ public:
 
     // destructor
     virtual ~Simulation();
+
+    // initialize
+    void init();
 
 
     // fluid field variables

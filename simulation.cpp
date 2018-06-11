@@ -37,9 +37,6 @@ Simulation::Simulation(){
     dens_prev = new float[size];
     occupiedGrid = new bool[size];
 
-    // grid initialization
-    initializeGrid();
-    initializeFluid();
 
     // create slot for timeout signal
     int timeout_value = 50; //in ms
@@ -58,6 +55,33 @@ Simulation::~Simulation()
 {
 }
 
+
+void Simulation::init()
+{
+    // initialize occ grid
+    for ( int i=1 ; i<=width ; i++ )
+    {
+        for ( int j=1 ; j<=height ; j++ )
+        {
+            occupiedGrid[IX(i,j)] = false; // u velocity at t=0
+        }
+    }
+
+    // initialize the fluid state (velocities and density) at t=0
+    for ( int i=0 ; i<=width+1 ; i++ )
+    {
+        for ( int j=0 ; j<=height+1 ; j++ )
+        {
+            u[IX(i,j)] = 0.0; // u velocity at t=0
+            v[IX(i,j)] = 0.0; // v velocity at t=0
+            dens[IX(i,j)] = 0.0; // density at t=0
+
+            u_prev[IX(i,j)] = 0.0; // u velocity at t=0
+            v_prev[IX(i,j)] = 0.0; // v velocity at t=0
+            dens_prev[IX(i,j)] = 0.0; // density at t=0
+        }
+    }
+}
 
 bool Simulation::on_timeout() {
 
@@ -147,39 +171,6 @@ bool Simulation::get_mouse_event(GdkEventButton* e)
     }
 
     return true;
-}
-
-
-void Simulation::initializeGrid()
-// initialize the grid cell coordinates
-{
-    // initialize occ grid
-    for ( int i=1 ; i<=width ; i++ )
-    {
-        for ( int j=1 ; j<=height ; j++ )
-        {
-            occupiedGrid[IX(i,j)] = false; // u velocity at t=0
-        }
-    }
-}
-
-
-void Simulation::initializeFluid()
-{
-    // initialize the fluid state (velocities and density) at t=0
-    for ( int i=0 ; i<=width+1 ; i++ )
-    {
-        for ( int j=0 ; j<=height+1 ; j++ )
-        {
-            u[IX(i,j)] = 0.0; // u velocity at t=0
-            v[IX(i,j)] = 0.0; // v velocity at t=0
-            dens[IX(i,j)] = 0.0; // density at t=0
-
-            u_prev[IX(i,j)] = 0.0; // u velocity at t=0
-            v_prev[IX(i,j)] = 0.0; // v velocity at t=0
-            dens_prev[IX(i,j)] = 0.0; // density at t=0
-        }
-    }
 }
 
 void Simulation::diffuse(int b, float * x, float * x0, float diff, float dt )
