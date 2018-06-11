@@ -283,8 +283,38 @@ void Simulation::dens_step (float *& x, float * x0, float * u, float * v, float 
 
     // executes all routines for motion of density field in one time step
 
+    // allocate cuda memory
+    const int NX = width+2;			// --- Number of discretization points along the x axis
+    const int NY = height+2;			// --- Number of discretization points along the y axis
+
+    // allocate cuda memory
+    float *d_x;			gpuErrchk(cudaMalloc((void**)&d_x,			NX * NY * sizeof(float)));
+    float *d_x0;			gpuErrchk(cudaMalloc((void**)&d_x0,			NX * NY * sizeof(float)));
+
+    // copy host memory to device memory
+    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+    gpuErrchk(cudaMemcpy(d_x0, x0,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+
+    // --- Grid size
+    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+
+    call_add_source_kernel(d_x,d_x0, NX, NY,dt)
+
+    add_source_kernel<<<dimGrid, dimBlock>>>(d_x,d_x0, NX, NY,dt);
+
+    // --- Copy results from device to host
+    gpuErrchk(cudaMemcpy(x,	 d_x,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+
+    // free device memory
+    gpuErrchk(cudaFree(d_x));
+    gpuErrchk(cudaFree(d_x0));
+
+
+
+
 #if USE_CUDA
-    add_source_gpu(x, x0, dt );
+    //add_source_gpu(x, x0, dt );
     SWAP ( x0,x);
     diffuse_gpu(0, x0,x, diff, dt );
     SWAP ( x0,x);
