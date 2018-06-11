@@ -14,8 +14,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7ab37cdf-96e6-4ab4-9260-c5af225af475" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cu" beforeDir="false" afterPath="$PROJECT_DIR$/main.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/numerical_kernels.cu" beforeDir="false" afterPath="$PROJECT_DIR$/numerical_kernels.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/numerical_kernels.h" beforeDir="false" afterPath="$PROJECT_DIR$/numerical_kernels.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/simulation.cpp" afterDir="false" />
@@ -30,17 +28,14 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="main.cu" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cu">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -48,10 +43,22 @@
       <file leaf-file-name="numerical_kernels.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numerical_kernels.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="37" column="96" selection-start-line="37" selection-start-column="96" selection-end-line="37" selection-end-column="96" />
+            <state relative-caret-position="187">
+              <caret line="41" column="49" selection-start-line="41" selection-start-column="49" selection-end-line="41" selection-end-column="49" />
               <folding>
                 <element signature="e#58#76#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="numerical_kernels.cu" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/numerical_kernels.cu">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="387" column="5" lean-forward="true" selection-start-line="387" selection-start-column="5" selection-end-line="387" selection-end-column="5" />
+              <folding>
+                <element signature="e#1#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -60,24 +67,10 @@
       <file leaf-file-name="simulation.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="276" column="10" selection-start-line="276" selection-start-column="10" selection-end-line="276" selection-end-column="10" />
+            <state relative-caret-position="224">
+              <caret line="185" column="17" selection-start-line="185" selection-start-column="17" selection-end-line="185" selection-end-column="17" />
               <folding>
                 <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#7006#7157#0" expanded="true" />
-                <element signature="e#7510#7909#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="numerical_kernels.cu" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/numerical_kernels.cu">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="187" selection-start-line="187" selection-end-line="187" />
-              <folding>
-                <element signature="e#1#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -86,23 +79,11 @@
       <file leaf-file-name="simulation.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="40" column="25" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
+            <state relative-caret-position="-237">
+              <caret line="48" column="83" lean-forward="true" selection-start-line="48" selection-start-column="83" selection-end-line="48" selection-end-column="83" />
               <folding>
                 <element signature="e#93#113#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TODO.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TODO.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="85">
-                <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-              </first_editor>
-              <second_editor />
             </state>
           </provider>
         </entry>
@@ -111,21 +92,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>diffuse_kernel</find>
-      <find>vel_step</find>
-      <find>vel_ste</find>
-      <find>try_diffuse</find>
-      <find>try_source</find>
-      <find>project</find>
-      <find>h</find>
-      <find>try_project</find>
-      <find>project_kernel_3</find>
-      <find>advect</find>
-      <find>occu</find>
-      <find>occup</find>
-      <find>initialize</find>
-      <find>project_kernel_2</find>
-      <find>occ</find>
       <find>try_advect</find>
       <find>set_b</find>
       <find>advect_gpu</find>
@@ -136,11 +102,26 @@
       <find>width</find>
       <find>try_diff</find>
       <find>set_bnd</find>
-      <find>set_bnd_kernel</find>
       <find>try_project_2</find>
       <find>project_gpu</find>
       <find>try_set_bnd</find>
       <find>cudaMall</find>
+      <find>add_source</find>
+      <find>diffuse_kerne</find>
+      <find>try_diffu</find>
+      <find>try_diffuse</find>
+      <find>call_add_source_kernel</find>
+      <find>diffuse_gpu</find>
+      <find>call_advect_kernel</find>
+      <find>advect</find>
+      <find>advect_ke</find>
+      <find>advect_kernel</find>
+      <find>set_bnd_ker</find>
+      <find>set_bnd_kernel</find>
+      <find>diff</find>
+      <find>call_set_bnd_kernel</find>
+      <find>dens_step</find>
+      <find>vel_step</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -161,13 +142,14 @@
         <option value="$PROJECT_DIR$/v3.h" />
         <option value="$USER_HOME$/Dropbox/develop/C++/FluidDemo/fluidDemo.cpp" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/TODO.md" />
+        <option value="$PROJECT_DIR$/simulation.cu" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/main.cu" />
+        <option value="$PROJECT_DIR$/simulation.h" />
         <option value="$PROJECT_DIR$/numerical_kernels.h" />
         <option value="$PROJECT_DIR$/simulation.cpp" />
         <option value="$PROJECT_DIR$/numerical_kernels.cu" />
-        <option value="$PROJECT_DIR$/simulation.h" />
-        <option value="$PROJECT_DIR$/TODO.md" />
       </list>
     </option>
   </component>
@@ -300,12 +282,14 @@
       <workItem from="1528301911125" duration="4000" />
       <workItem from="1528387661178" duration="3669000" />
       <workItem from="1528444432173" duration="1350000" />
-      <workItem from="1528448019927" duration="668000" />
+      <workItem from="1528448019927" duration="4216000" />
+      <workItem from="1528708164513" duration="4840000" />
+      <workItem from="1528721079795" duration="1398000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114137000" />
+    <option name="totallyTimeSpent" value="123923000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -317,16 +301,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.1260917" />
+      <window_info content_ui="combo" id="Project" order="1" weight="0.1260917" />
       <window_info anchor="bottom" id="TODO" order="10" weight="0.32948583" />
       <window_info anchor="bottom" id="Messages" order="0" sideWeight="0.8480326" weight="0.32004198" />
       <window_info anchor="bottom" id="CMake" order="3" sideWeight="0.75202155" weight="0.32843652" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.15196744" side_tool="true" weight="0.32805908" />
       <window_info anchor="bottom" id="Version Control" order="2" weight="0.32948583" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.8636364" visible="true" weight="0.3557188" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.8636364" visible="true" weight="0.23819517" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32948583" />
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -339,6 +323,26 @@
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.32948583" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.8636364" visible="true" weight="0.23819517" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.1260917" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="10" weight="0.32948583" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.32948583" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.8310847" weight="0.39874083" />
+      <window_info anchor="bottom" id="Messages" order="0" sideWeight="0.8480326" weight="0.32004198" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32948583" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.15196744" side_tool="true" weight="0.32805908" />
+      <window_info anchor="bottom" id="Version Control" order="2" weight="0.32948583" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="CMake" order="3" sideWeight="0.75202155" weight="0.32843652" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -621,72 +625,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/TODO.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="170">
+            <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="51" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cu">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/numerical_kernels.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="37" column="96" selection-start-line="37" selection-start-column="96" selection-end-line="37" selection-end-column="96" />
-          <folding>
-            <element signature="e#58#76#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="340">
+          <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="276" column="10" selection-start-line="276" selection-start-column="10" selection-end-line="276" selection-end-column="10" />
+        <state relative-caret-position="224">
+          <caret line="185" column="17" selection-start-line="185" selection-start-column="17" selection-end-line="185" selection-end-column="17" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#7006#7157#0" expanded="true" />
-            <element signature="e#7510#7909#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/numerical_kernels.cu">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="187" selection-start-line="187" selection-end-line="187" />
-          <folding>
-            <element signature="e#1#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="40" column="25" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
+        <state relative-caret-position="-237">
+          <caret line="48" column="83" lean-forward="true" selection-start-line="48" selection-start-column="83" selection-end-line="48" selection-end-column="83" />
           <folding>
             <element signature="e#93#113#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="85">
-            <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/numerical_kernels.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="41" column="49" selection-start-line="41" selection-start-column="49" selection-end-line="41" selection-end-column="49" />
+          <folding>
+            <element signature="e#58#76#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.cu">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/numerical_kernels.cu">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="387" column="5" lean-forward="true" selection-start-line="387" selection-start-column="5" selection-end-line="387" selection-end-column="5" />
+          <folding>
+            <element signature="e#1#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

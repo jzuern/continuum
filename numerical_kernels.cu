@@ -83,10 +83,6 @@ __global__ void advect_kernel(float * d,float * d0,float * u, float * v, int NX,
         int idx01 = i0 + j1*NX;
         int idx10 = i1 + j0*NX;
 
-//        if(occ == 0) d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+t1*d0[IX(i0,j1)])+s1*(t0*d0[IX(i1,j0)]+t1*d0[IX(i1,j1)]);
-//        else
-//            d[IX(i,j)] = 0;
-
         if (occ[idx]==false)
             d[idx] = s0*(t0*d0[idx00] + t1*d0[idx01]) + s1*(t0*d0[idx10] + t1*d0[idx11]);
         else
@@ -272,112 +268,112 @@ void try_advect(float * d, float *  d0, float * u, float * v, const int height, 
 }
 
 
-void try_project_1(float * div, float * u,float * v,float * p, const int height, const int width, const float h)
-{
-    const int NX = width+2;			// --- Number of discretization points along the x axis
-    const int NY = height+2;			// --- Number of discretization points along the y axis
-
-    // allocate cuda memory
-    float *d_div;	    gpuErrchk(cudaMalloc((void**)&d_div,			NX * NY * sizeof(float)));
-    float *d_u;		    gpuErrchk(cudaMalloc((void**)&d_u,			NX * NY * sizeof(float)));
-    float *d_v;			gpuErrchk(cudaMalloc((void**)&d_v,			NX * NY * sizeof(float)));
-    float *d_p;			gpuErrchk(cudaMalloc((void**)&d_p,			NX * NY * sizeof(float)));
-
-    // copy host memory to device memory
-    gpuErrchk(cudaMemcpy(d_u, u,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-    gpuErrchk(cudaMemcpy(d_v, v,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-
-
-    // Grid size
-    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
-    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
-
-    project_kernel_1<<<dimGrid, dimBlock>>>(d_div,d_u,d_v,d_p, NX, NY, h);
-
-
-    // --- Copy results from device to host
-    gpuErrchk(cudaMemcpy(div,d_div,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-    gpuErrchk(cudaMemcpy(p,	 d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-
-    // free device memory
-    gpuErrchk(cudaFree(d_div));
-    gpuErrchk(cudaFree(d_u));
-    gpuErrchk(cudaFree(d_v));
-    gpuErrchk(cudaFree(d_p));
-
-}
-
-
-
-void try_project_2(float * div, float * p, const int height, const int width, const int maxiter, bool * occ, float * dens, float * u)
-{
-    const int NX = width+2;			// --- Number of discretization points along the x axis
-    const int NY = height+2;			// --- Number of discretization points along the y axis
-
-    // allocate cuda memory
-    float *d_div;	    gpuErrchk(cudaMalloc((void**)&d_div,		NX * NY * sizeof(float)));
-    float *d_p;		    gpuErrchk(cudaMalloc((void**)&d_p,			NX * NY * sizeof(float)));
-
-    // copy host memory to device memory
-    gpuErrchk(cudaMemcpy(d_div, div,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-    gpuErrchk(cudaMemcpy(d_p, p,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//void try_project_1(float * div, float * u,float * v,float * p, const int height, const int width, const float h)
+//{
+//    const int NX = width+2;			// --- Number of discretization points along the x axis
+//    const int NY = height+2;			// --- Number of discretization points along the y axis
+//
+//    // allocate cuda memory
+//    float *d_div;	    gpuErrchk(cudaMalloc((void**)&d_div,			NX * NY * sizeof(float)));
+//    float *d_u;		    gpuErrchk(cudaMalloc((void**)&d_u,			NX * NY * sizeof(float)));
+//    float *d_v;			gpuErrchk(cudaMalloc((void**)&d_v,			NX * NY * sizeof(float)));
+//    float *d_p;			gpuErrchk(cudaMalloc((void**)&d_p,			NX * NY * sizeof(float)));
+//
+//    // copy host memory to device memory
+//    gpuErrchk(cudaMemcpy(d_u, u,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_v, v,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//
+//
+//    // Grid size
+//    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+//    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+//
+//    project_kernel_1<<<dimGrid, dimBlock>>>(d_div,d_u,d_v,d_p, NX, NY, h);
+//
+//
+//    // --- Copy results from device to host
+//    gpuErrchk(cudaMemcpy(div,d_div,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//    gpuErrchk(cudaMemcpy(p,	 d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//
+//    // free device memory
+//    gpuErrchk(cudaFree(d_div));
+//    gpuErrchk(cudaFree(d_u));
+//    gpuErrchk(cudaFree(d_v));
+//    gpuErrchk(cudaFree(d_p));
+//
+//}
 
 
-    // Grid size
-    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
-    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
-
-    for (int k=0; k<maxiter; k++)
-    {
-        project_kernel_2 << < dimGrid, dimBlock >> > (d_div, d_p, NX, NY);
-
-        // --- Copy results from device to host
-        gpuErrchk(cudaMemcpy(p,d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-        //set_bnd_cp(0, p, NX,NY, occ);
-        try_set_bnd(0,p,width,height,occ,dens,u);
-    }
-
-    // --- Copy results from device to host
-    gpuErrchk(cudaMemcpy(p,d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-
-    // free device memory
-    gpuErrchk(cudaFree(d_p));
-    gpuErrchk(cudaFree(d_div));
-}
-
-
-void try_project_3(float * u, float *  v, float * p, const int height, const int width, const float h)
-{
-    const int NX = width+2;			    // --- Number of discretization points along the x axis
-    const int NY = height+2;			// --- Number of discretization points along the y axis
-
-    // allocate cuda memory
-    float *d_u;	        gpuErrchk(cudaMalloc((void**)&d_u,		    NX * NY * sizeof(float)));
-    float *d_v;		    gpuErrchk(cudaMalloc((void**)&d_v,			NX * NY * sizeof(float)));
-    float *d_p;		    gpuErrchk(cudaMalloc((void**)&d_p,			NX * NY * sizeof(float)));
-
-    // copy host memory to device memory
-    gpuErrchk(cudaMemcpy(d_u, u,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-    gpuErrchk(cudaMemcpy(d_v, v,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-    gpuErrchk(cudaMemcpy(d_p, p,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-
-
-    // Grid size
-    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
-    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
-
-    project_kernel_3 <<< dimGrid, dimBlock >>> (d_u,d_v,d_p, NX, NY, h);
-
-
-    // --- Copy results from device to host
-    gpuErrchk(cudaMemcpy(u,d_u,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-    gpuErrchk(cudaMemcpy(v,d_v,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-
-    // free device memory
-    gpuErrchk(cudaFree(d_u));
-    gpuErrchk(cudaFree(d_v));
-    gpuErrchk(cudaFree(d_p));
-}
+//
+//void try_project_2(float * div, float * p, const int height, const int width, const int maxiter, bool * occ, float * dens, float * u)
+//{
+//    const int NX = width+2;			// --- Number of discretization points along the x axis
+//    const int NY = height+2;			// --- Number of discretization points along the y axis
+//
+//    // allocate cuda memory
+//    float *d_div;	    gpuErrchk(cudaMalloc((void**)&d_div,		NX * NY * sizeof(float)));
+//    float *d_p;		    gpuErrchk(cudaMalloc((void**)&d_p,			NX * NY * sizeof(float)));
+//
+//    // copy host memory to device memory
+//    gpuErrchk(cudaMemcpy(d_div, div,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_p, p,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//
+//
+//    // Grid size
+//    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+//    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+//
+//    for (int k=0; k<maxiter; k++)
+//    {
+//        project_kernel_2 << < dimGrid, dimBlock >> > (d_div, d_p, NX, NY);
+//
+//        // --- Copy results from device to host
+//        gpuErrchk(cudaMemcpy(p,d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//        //set_bnd_cp(0, p, NX,NY, occ);
+//        try_set_bnd(0,p,width,height,occ,dens,u);
+//    }
+//
+//    // --- Copy results from device to host
+//    gpuErrchk(cudaMemcpy(p,d_p,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//
+//    // free device memory
+//    gpuErrchk(cudaFree(d_p));
+//    gpuErrchk(cudaFree(d_div));
+//}
+//
+//
+//void try_project_3(float * u, float *  v, float * p, const int height, const int width, const float h)
+//{
+//    const int NX = width+2;			    // --- Number of discretization points along the x axis
+//    const int NY = height+2;			// --- Number of discretization points along the y axis
+//
+//    // allocate cuda memory
+//    float *d_u;	        gpuErrchk(cudaMalloc((void**)&d_u,		    NX * NY * sizeof(float)));
+//    float *d_v;		    gpuErrchk(cudaMalloc((void**)&d_v,			NX * NY * sizeof(float)));
+//    float *d_p;		    gpuErrchk(cudaMalloc((void**)&d_p,			NX * NY * sizeof(float)));
+//
+//    // copy host memory to device memory
+//    gpuErrchk(cudaMemcpy(d_u, u,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_v, v,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_p, p,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//
+//
+//    // Grid size
+//    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+//    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+//
+//    project_kernel_3 <<< dimGrid, dimBlock >>> (d_u,d_v,d_p, NX, NY, h);
+//
+//
+//    // --- Copy results from device to host
+//    gpuErrchk(cudaMemcpy(u,d_u,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//    gpuErrchk(cudaMemcpy(v,d_v,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//
+//    // free device memory
+//    gpuErrchk(cudaFree(d_u));
+//    gpuErrchk(cudaFree(d_v));
+//    gpuErrchk(cudaFree(d_p));
+//}
 
 
 void pretty_printer(float * x, int width, int height)
@@ -394,7 +390,7 @@ void pretty_printer(float * x, int width, int height)
 }
 
 
-__global__ void set_bnd_kernel(float * x, const int NX, const int NY, int b, bool * occ, float * dens, float * u)
+__global__ void set_bnd_kernel(int b, float * x, const int NX, const int NY, bool * occ, float * dens, float * u)
 {
     const int i = blockIdx.x * blockDim.x + threadIdx.x ;
     const int j = blockIdx.y * blockDim.y + threadIdx.y ;
@@ -460,13 +456,13 @@ __global__ void set_bnd_kernel(float * x, const int NX, const int NY, int b, boo
 
         // additional boundary conditions:
 
-//        if ((i > 0.4*NY && i < 0.5*NY)) {
-//            dens[get_idx(1, i,NX)] = 1.0;
-//            u[get_idx(1, i,NX)] = 10.0;
-//
-//            dens[get_idx(i, 1,NX)] = 0.6;
-//            u[get_idx(i, 1,NX)] = 10.0;
-//        }
+        if ((i > 0.4*NY && i < 0.5*NY)) {
+            dens[get_idx(1, i,NX)] = 1.0;
+            u[get_idx(1, i,NX)] = 10.0;
+
+            dens[get_idx(i, 1,NX)] = 0.6;
+            u[get_idx(i, 1,NX)] = 10.0;
+        }
 
         // define edge cells as median of neighborhood
         x[get_idx(0 ,0 ,NX)]        = 0.5f*(x[get_idx(1,0,NX )]     + x[get_idx(0 ,1,NX)]);
@@ -478,30 +474,76 @@ __global__ void set_bnd_kernel(float * x, const int NX, const int NY, int b, boo
 
 
 
+//
+//
+//void try_set_bnd(int b, float * x, const int width, const int height, bool * occ, float * dens, float * u)
+//{
+//    const int NX = width+2;			    // --- Number of discretization points along the x axis
+//    const int NY = height+2;			// --- Number of discretization points along the y axis
+//
+//    // allocate cuda memory
+//    float *d_x;	        gpuErrchk(cudaMalloc((void**)&d_x,		    NX * NY * sizeof(float)));
+//
+//    // copy host memory to device memory
+//    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//
+//
+//    // Grid size
+//    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+//    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+//
+//    set_bnd_kernel <<< dimGrid, dimBlock >>> (d_x, NX, NY, b, occ, dens, u);
+//
+//
+//    // --- Copy results from device to host
+//    gpuErrchk(cudaMemcpy(x, d_x, NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//
+//    // free device memory
+//    gpuErrchk(cudaFree(d_x));
+//}
 
 
-void try_set_bnd(int b, float * x, const int width, const int height, bool * occ, float * dens, float * u)
+void call_set_bnd_kernel(int b, float * d_x, const int NX, const int NY, dim3 dimGrid, dim3 dimBlock, bool * occ, float * dens, float * u)
 {
-    const int NX = width+2;			    // --- Number of discretization points along the x axis
-    const int NY = height+2;			// --- Number of discretization points along the y axis
-
-    // allocate cuda memory
-    float *d_x;	        gpuErrchk(cudaMalloc((void**)&d_x,		    NX * NY * sizeof(float)));
-
-    // copy host memory to device memory
-    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-
-
-    // Grid size
-    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
-    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
-
-    set_bnd_kernel <<< dimGrid, dimBlock >>> (d_x, NX, NY, b, occ, dens, u);
-
-
-    // --- Copy results from device to host
-    gpuErrchk(cudaMemcpy(x, d_x, NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-
-    // free device memory
-    gpuErrchk(cudaFree(d_x));
+    set_bnd_kernel <<< dimGrid, dimBlock >>> (b, d_x, NX, NY, occ, dens, u);
 }
+
+
+
+
+void call_add_source_kernel(float * d_x, float * d_x0, const int NX, const int NY, const float dt, dim3 dimBlock, dim3 dimGrid)
+{
+    add_source_kernel<<<dimGrid, dimBlock>>>(d_x,d_x0, NX, NY,dt);
+}
+
+
+
+void call_diffuse_kernel(float *x_d, float *x_prev_d, int NX, int NY, float a , dim3 dimBlock, dim3 dimGrid)
+{
+    diffuse_kernel <<< dimGrid, dimBlock >>> (x_d, x_prev_d, NX, NY, a);
+}
+
+
+
+void call_advect_kernel(float * d_x, float * d_x0, float * d_u,float * d_v, int NX, int NY, float dt, bool * occ, dim3 dimBlock, dim3 dimGrid)
+{
+    advect_kernel<<<dimGrid, dimBlock>>>(d_x, d_x0, d_u, d_v,  NX,  NY,  dt,  occ);
+}
+
+//
+//void call_project_kernel_1(float * d_div,float * d_u,float * d_v,float * d_p, int NX, int NY, float h, dim3 dimBlock, dim3 dimGrid)
+//{
+//    add_source_kernel<<<dimGrid, dimBlock>>>(d_x,d_x0, NX, NY,dt);
+//}
+//
+//
+//void call_project_kernel_2(float * d_div,float * d_p, const int NX, const int NY, dim3 dimBlock, dim3 dimGrid)
+//{
+//    add_source_kernel<<<dimGrid, dimBlock>>>(d_x,d_x0, NX, NY,dt);
+//}
+//
+//
+//void call_project_kernel_3(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float h, dim3 dimBlock, dim3 dimGrid)
+//{
+//    add_source_kernel<<<dimGrid, dimBlock>>>(d_x,d_x0, NX, NY,dt);
+//}

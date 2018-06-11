@@ -27,6 +27,14 @@ using namespace std;
 
 __host__ __device__ int iDivUp(int a, int b);
 
+void pretty_printer(float * x, int width, int height);
+
+inline int get_idx(int i,int j, int NX);
+
+
+
+// CFD ROUTINES
+
 void try_diffuse(float * x,float * x_old, int height, int width, const float diff, const float dt, const int maxiter);
 void try_source(float* x,float* s, int height, int width, const float dt);
 void try_advect(float * d, float *  d0, float * u, float * v, const int height, const int width, const float dt, bool * occ);
@@ -50,9 +58,20 @@ __global__ void set_bnd_kernel(float * d_x, int NX, int NY, int b);
 
 
 
-void pretty_printer(float * x, int width, int height);
+// NEW
 
-inline int get_idx(int i,int j, int NX);
+void call_set_bnd_kernel(int b, float * x, const int width, const int height, dim3 dimGrid, dim3 dimBlock, bool * occ, float * dens, float * u);
 
+void call_add_source_kernel(float * d_x, float * d_x0, const int NX, const int NY, const float dt, dim3 dimBlock, dim3 dimGrid);
+
+void call_diffuse_kernel(float *x,float *s, int height, int width , float a, dim3 dimBlock, dim3 dimGrid);
+
+void call_advect_kernel(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float dt, bool * occ, dim3 dimBlock, dim3 dimGrid);
+
+void call_project_kernel_1(float * d_div,float * d_u,float * d_v,float * d_p, int NX, int NY, float h, dim3 dimBlock, dim3 dimGrid);
+
+void call_project_kernel_2(float * d_div,float * d_p, const int NX, const int NY, dim3 dimBlock, dim3 dimGrid);
+
+void call_project_kernel_3(float * d_d,float * d_d0,float * d_u,float * d_v, int NX, int NY, float h, dim3 dimBlock, dim3 dimGrid);
 
 #endif //NUMERICAL_KERNELS_H

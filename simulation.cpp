@@ -69,6 +69,7 @@ bool Simulation::on_timeout() {
     // NAVIER-STOKES SOLUTION: VELOCITY FIELD AND DENSITY FIELD SEPARATELY SOLVED
     vel_step( u, v, u_prev, v_prev, visc, dt);
     dens_step( dens, dens_prev, u, v, diff, dt);
+
     time_step_counter += 1;
 
     float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
@@ -281,75 +282,137 @@ void Simulation::add_source_gpu (float * x, float * s, float dt )
 void Simulation::dens_step (float *& x, float * x0, float * u, float * v, float diff,float dt)
 {
 
-    // executes all routines for motion of density field in one time step
 
-    // allocate cuda memory
-    const int NX = width+2;			// --- Number of discretization points along the x axis
-    const int NY = height+2;			// --- Number of discretization points along the y axis
+//    // 0: PREALLOCATIONS
+//    const int NX = width+2;			// --- Number of discretization points along the x axis
+//    const int NY = height+2;		// --- Number of discretization points along the y axis
+//
+//    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
+//    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
+//
+//    float *d_x;			gpuErrchk(cudaMalloc((void**)&d_x,			NX * NY * sizeof(float)));
+//    float *d_x0;		gpuErrchk(cudaMalloc((void**)&d_x0,			NX * NY * sizeof(float)));
+//
+//    // allocate cuda memory
+//    float *d_u;			gpuErrchk(cudaMalloc((void**)&d_u,			NX * NY * sizeof(float)));
+//    float *d_v;			gpuErrchk(cudaMalloc((void**)&d_v,			NX * NY * sizeof(float)));
+//    bool *d_occ;		gpuErrchk(cudaMalloc((void**)&d_occ,			NX * NY * sizeof(float)));
+//    bool *d_dens;		gpuErrchk(cudaMalloc((void**)&d_dens,			NX * NY * sizeof(float)));
+//
+//    gpuErrchk(cudaMemcpy(d_u, u,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_v, v,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_occ,occupiedGrid,	 NX * NY * sizeof(bool), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_dens,dens,	 NX * NY * sizeof(bool), cudaMemcpyHostToDevice));
+//
+//
+//    const float a = dt*diff*height*width;
+//
+//    // 1 - ADD SOURCE
+//
+//    // copy host memory to device memory
+//    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    gpuErrchk(cudaMemcpy(d_x0, x0,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//
+//    call_add_source_kernel(d_x,d_x0, NX, NY,dt, dimBlock, dimGrid);
+//
+//    // 2 - DIFFUSE
+//
+//
+//    for (int k=0; k<maxiter; k++)
+//    {
+//        call_diffuse_kernel(d_x,d_x0,NY,NX,a,dimBlock,dimGrid);
+//    }
+//
+//
+//    call_set_bnd_kernel(0, d_x, NX,NY,d_occ,);
+//
+////    gpuErrchk(cudaMemcpy(x,	 d_x,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//
+//
+//
+//
+//    set_bnd(0, x );
+//
+//
+//    //SWAP ( x0,x); // do not forget!
+//
+//
+//    // 3 - ADVECT
+//
+////    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
+//    SWAP ( d_x0,d_x);
+//
+//    call_advect_kernel(d_x,d_x0,d_u,d_v,NX,NY,dt,d_occ,dimBlock,dimGrid);
+//
+//    gpuErrchk(cudaMemcpy(x,	 d_x,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
+//
+//
+//
+//    // free device memory
+//    gpuErrchk(cudaFree(d_x));
+//    gpuErrchk(cudaFree(d_x0));
+//    gpuErrchk(cudaFree(d_u));
+//    gpuErrchk(cudaFree(d_v));
+//    gpuErrchk(cudaFree(d_occ));
 
-    // allocate cuda memory
-    float *d_x;			gpuErrchk(cudaMalloc((void**)&d_x,			NX * NY * sizeof(float)));
-    float *d_x0;			gpuErrchk(cudaMalloc((void**)&d_x0,			NX * NY * sizeof(float)));
-
-    // copy host memory to device memory
-    gpuErrchk(cudaMemcpy(d_x, x,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-    gpuErrchk(cudaMemcpy(d_x0, x0,	 NX * NY * sizeof(float), cudaMemcpyHostToDevice));
-
-    // --- Grid size
-    dim3 dimBlock(BLOCK_SIZE_X, BLOCK_SIZE_Y);
-    dim3 dimGrid (iDivUp(NX, BLOCK_SIZE_X), iDivUp(NY, BLOCK_SIZE_Y));
-
-    call_add_source_kernel(d_x,d_x0, NX, NY,dt)
-
-    add_source_kernel<<<dimGrid, dimBlock>>>(d_x,d_x0, NX, NY,dt);
-
-    // --- Copy results from device to host
-    gpuErrchk(cudaMemcpy(x,	 d_x,	  NX * NY * sizeof(float), cudaMemcpyDeviceToHost));
-
-    // free device memory
-    gpuErrchk(cudaFree(d_x));
-    gpuErrchk(cudaFree(d_x0));
 
 
+    // ----------------------------- OLD --------------------------------------
 
+    // GPU
 
-#if USE_CUDA
     //add_source_gpu(x, x0, dt );
-    SWAP ( x0,x);
-    diffuse_gpu(0, x0,x, diff, dt );
-    SWAP ( x0,x);
-    advect_gpu(0, x, x0, u, v, dt , occupiedGrid);
-#else
+    //SWAP ( x0,x);
+    //diffuse_gpu(0, x0,x, diff, dt );
+    //SWAP ( x0,x);
+    //advect_gpu(0, x, x0, u, v, dt , occupiedGrid);
+
+    // CPU
     add_source(x, x0, dt );
     SWAP ( x0,x);
     diffuse(0, x, x0, diff, dt );
     SWAP ( x0,x);
     advect(0, x, x0, u, v, dt );
-#endif
-
-
 }
 
 
 void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float visc, float dt )
 {
-    // executes all routines for motion of velocity field in one time step
+//    // executes all routines for motion of velocity field in one time step
+//    // watch out with x0 and x!
+//
+//    add_source ( u, u0, dt );
+//    SWAP ( u0, u );
+//    diffuse(1, u,u0, diff, dt );
+//    add_source( v, v0, dt );
+//    SWAP ( v0, v );
+//    diffuse(2, v, v0, diff, dt );
+//    project ( u, v, u0, v0);
+//    SWAP ( u0, u );
+//    SWAP ( v0, v );
+//    advect(1, u, u0, u0, v0, dt );
+//    advect(2, v, v0, u0, v0, dt);
+//    project ( u, v, u0, v0);
 
-    // GPU
-#if USE_CUDA
-    add_source_gpu ( u, u0, dt );
-    SWAP ( u0, u );
-    diffuse_gpu(1, u0,u, diff, dt );
-    add_source_gpu( v, v0, dt );
-    SWAP ( v0, v );
-    diffuse_gpu(2, v0, v, diff, dt );
-    project_gpu ( u, v, u0, v0, dens);
-    SWAP ( u0, u );
-    SWAP ( v0, v );
-    advect_gpu(1, u, u0, u0, v0, dt,occupiedGrid );
-    advect_gpu(2, v, v0, u0, v0, dt,occupiedGrid);
-    project_gpu ( u, v, u0, v0 , dens);
-#else
+
+
+    // OLD ---------------------------------------------------
+//
+//    // GPU
+//#if USE_CUDA
+//    add_source_gpu ( u, u0, dt );
+//    SWAP ( u0, u );
+//    diffuse_gpu(1, u0,u, diff, dt );
+//    add_source_gpu( v, v0, dt );
+//    SWAP ( v0, v );
+//    diffuse_gpu(2, v0, v, diff, dt );
+//    project_gpu ( u, v, u0, v0, dens);
+//    SWAP ( u0, u );
+//    SWAP ( v0, v );
+//    advect_gpu(1, u, u0, u0, v0, dt,occupiedGrid );
+//    advect_gpu(2, v, v0, u0, v0, dt,occupiedGrid);
+//    project_gpu ( u, v, u0, v0 , dens);
+//#else
     add_source ( u, u0, dt );
     SWAP ( u0, u );
     diffuse(1, u0,u, diff, dt );
@@ -362,7 +425,7 @@ void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float v
     advect(1, u, u0, u0, v0, dt );
     advect(2, v, v0, u0, v0, dt);
     project ( u, v, u0, v0);
-#endif
+//#endif
 
 }
 
@@ -410,42 +473,42 @@ void Simulation::project (float * u, float * v, float * p, float * div )
     set_bnd( 1, u );
     set_bnd( 2, v );
 }
-
-
-void Simulation::project_gpu(float * u, float * v, float * p, float * div, float * dens)
-{
-    // force routing to be mass conserving (use "hodge decomposition" for obtained velocity field and
-    // eliminate gradient field)
-    // this will make the velocity field to have fluid-like swirls as desired
-
-    float h = 1.0/max(height,width);
-
-    try_project_1(div, u,v,p, height, width, h);
-
-    set_bnd(0, div );
-    set_bnd(0, p );
-
-
-
-//    try_project_2(p,div, height, width, maxiter, occupiedGrid, dens, u);
-
-    for (int k=0 ; k<maxiter ; k++ )
-    {
-        for (int i=1 ; i<=width ; i++ )
-        {
-            for (int j=1 ; j<=height ; j++ )
-            {
-                p[IX(i,j)] = (div[IX( i,j)]+p[IX(i-1,j)]+p[IX(i+1,j)]+p[IX(i,j-1)]+p[IX(i,j+1)])/4;
-            }
-        }
-        set_bnd(0, p );
-    }
-
-    try_project_3(u,v,p,height,width,h);
-
-    set_bnd( 1, u );
-    set_bnd( 2, v );
-}
+//
+//
+//void Simulation::project_gpu(float * u, float * v, float * p, float * div, float * dens)
+//{
+//    // force routing to be mass conserving (use "hodge decomposition" for obtained velocity field and
+//    // eliminate gradient field)
+//    // this will make the velocity field to have fluid-like swirls as desired
+//
+//    float h = 1.0/max(height,width);
+//
+//    try_project_1(div, u,v,p, height, width, h);
+//
+//    set_bnd(0, div );
+//    set_bnd(0, p );
+//
+//
+//
+////    try_project_2(p,div, height, width, maxiter, occupiedGrid, dens, u);
+//
+//    for (int k=0 ; k<maxiter ; k++ )
+//    {
+//        for (int i=1 ; i<=width ; i++ )
+//        {
+//            for (int j=1 ; j<=height ; j++ )
+//            {
+//                p[IX(i,j)] = (div[IX( i,j)]+p[IX(i-1,j)]+p[IX(i+1,j)]+p[IX(i,j-1)]+p[IX(i,j+1)])/4;
+//            }
+//        }
+//        set_bnd(0, p );
+//    }
+//
+//    try_project_3(u,v,p,height,width,h);
+//
+//    set_bnd( 1, u );
+//    set_bnd( 2, v );
+//}
 
 void Simulation::set_bnd(int b, float * x)
 {
@@ -481,13 +544,13 @@ void Simulation::set_bnd(int b, float * x)
 
             dens[IX(i,1)] = 0.6;
             u[IX(i,1)] = 10.0;
-
         }
     }
 
     // upper and lower wall
 
-    for (int i=0 ; i<width+2; i++ ) {
+    for (int i=0 ; i<width+2; i++ )
+    {
 
         if (b == 0) // density
         {
