@@ -97,6 +97,8 @@ bool Simulation::on_timeout() {
 
     float time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000); // ms
 
+    print_extreme_values();
+
     std::cout << "    Step calculation duration: " << time << " ms" << std::endl;
     update_view(dens);
     printf("completed update_view\n");
@@ -121,8 +123,6 @@ void Simulation::update_view(float * dens)
             }
             else
             {
-//                float value_u = u[IX(i,j)];
-//                float value_v = v[IX(i,j)];
                 float value_dens = dens[IX(i,j)] * 255.0 / 5.0;
 
                 img_data[ii] = guint8(value_dens);
@@ -313,10 +313,10 @@ void Simulation::vel_step (float * u, float * v, float *  u0, float * v0,float v
 #else
     add_source ( u, u0, dt );
     SWAP ( u0, u );
-    diffuse(1, u0,u, diff, dt );
+    diffuse(1, u,u0, diff, dt );
     add_source( v, v0, dt );
     SWAP ( v0, v );
-    diffuse(2, v0, v, diff, dt );
+    diffuse(2, v, v0, diff, dt );
     project ( u, v, u0, v0);
     SWAP ( u0, u );
     SWAP ( v0, v );
@@ -436,12 +436,17 @@ void Simulation::set_bnd(int b, float * x)
         // additional boundary conditions:
 
         if ((i > 0.4*height && i < 0.5*height)){
-            dens[IX(1,i)] = 1.0;
-            u[IX(1,i)] = 10.0;
-            //v[IX(1,i)] = -5.0;
+//            dens[IX(1,i)] = 1.0;
+//            u[IX(1,i)] = 1.0;
+//
+//            dens[IX(i,1)] = 0.6;
+//            u[IX(i,1)] = 5.0;
 
-            dens[IX(i,1)] = 0.6;
-            u[IX(i,1)] = 10.0;
+            dens[IX(60,i)] = 1.0;
+            v[IX(60,i)] = 2.0;
+
+//            dens[IX(i,30)] = 1.0;
+//            v[IX(i,30)] = 1.0;
 
         }
     }
@@ -492,6 +497,39 @@ void Simulation::set_bnd(int b, float * x)
 }
 
 
+void Simulation::print_extreme_values()
+{
 
+    float min_u = 1E10;
+    float max_u = -1E10;
+    float min_v = 1E10;
+    float max_v = -1E10;
+    float min_dens = 1E10;
+    float max_dens = -1E10;
+
+
+    for (int i=1 ; i<=width ; i++ )
+    {
+        for (int j=1 ; j<=height ; j++ )
+        {
+            if (u[IX(i,j)] > max_u ) max_u = u[IX(i,j)];
+            if (u[IX(i,j)] < min_u ) min_u = u[IX(i,j)];
+            if (v[IX(i,j)] > max_v ) max_v = v[IX(i,j)];
+            if (v[IX(i,j)] < min_v ) min_v = v[IX(i,j)];
+            if (dens[IX(i,j)] > max_dens ) max_dens = dens[IX(i,j)];
+            if (dens[IX(i,j)] < min_dens ) min_dens = dens[IX(i,j)];
+
+        }
+    }
+
+    printf("Extreme values for this frame: \n");
+    printf("    min_u = %f \n", min_u);
+    printf("    max_u = %f \n", max_u);
+    printf("    min_v = %f \n", min_v);
+    printf("    max_v = %f \n", max_v);
+    printf("    min_dens = %f \n", min_dens);
+    printf("    max_dens = %f \n", max_dens);
+
+}
 
 
